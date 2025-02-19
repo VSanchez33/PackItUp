@@ -15,7 +15,7 @@
             "name": "PackItUp",
             "request": "launch",
             "mainClass": "PackItUp",
-            "projectName": "PackItUP_889e20b6",
+            "projectName": "PackItUp_889e20d6",
             "vmArgs": "--module-path /Users/tabathavalverde/javafx-sdk-23.0.2/lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
