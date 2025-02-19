@@ -1,0 +1,15 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.base.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.controls.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.web.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.swing.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.graphics.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.media.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx-swt.jar",
+        "/Users/tabathavalverde/javafx-sdk-23.0.2/lib/javafx.fxml.jar"
+    ]
+}
