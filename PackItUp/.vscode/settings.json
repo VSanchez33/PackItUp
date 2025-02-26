@@ -2,7 +2,7 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "/Users/vincentsanchez/Documents/javafx-sdk-23.0.2/lib/**/*.jar"
+        "${workspaceFolder}/javafx-sdk-23.0.2/lib/**/*.jar",
+        "javafx-sdk-23.0.2/lib/**/*.jar"
     ]
 }
