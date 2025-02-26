@@ -12,7 +12,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("splash.fxml"));
         primaryStage.setTitle("Pack It Up");
-        primaryStage.setScene(new Scene(root, 640, 400));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
