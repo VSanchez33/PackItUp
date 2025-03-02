@@ -6,17 +6,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Launch App",
             "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "PackItUp",
-            "request": "launch",
-            "mainClass": "PackItUp",
-            "projectName": "PackItUp_889e20d6",
-            "vmArgs": "--module-path /Users/tabathavalverde/javafx-sdk-23.0.2/lib --add-modules javafx.controls,javafx.fxml"
+            "mainClass": "PackItUp.Main",
+
+            "vmArgs": "--module-path \"${workspaceFolder}/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }
