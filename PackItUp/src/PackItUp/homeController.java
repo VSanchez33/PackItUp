@@ -14,6 +14,17 @@ public class homeController {
     private Scene scene;
     private Parent root;
 
+<<<<<<< HEAD
+=======
+    public void goMain(ActionEvent event) throws IOException{
+        root = FXMLLoader.load(getClass().getResource("splash.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+>>>>>>> Tabatha
     public void createItem(ActionEvent event) throws IOException{
         root = FXMLLoader.load(getClass().getResource("itemCreation.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
