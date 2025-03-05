@@ -15,7 +15,6 @@ public class Main extends Application{
         primaryStage.setTitle("Pack It Up");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
     } // end of start
 
     public static void main(String[] args) throws Exception {
