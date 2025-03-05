@@ -15,6 +15,10 @@ import javafx.scene.control.DatePicker;
     
 public class itemController {
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
     private ObservableList<Item> itemList; // This will store the items from homeController
     private Item currentItem; // Store the item currently being edited
     
@@ -63,6 +67,16 @@ public class itemController {
 
     } // end of setItem
 
+    @FXML
+    public void cancel (ActionEvent event) throws IOException {
+        
+        root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    
+    } // end of goMain
 
     // Save the changes made to the item
     @FXML
