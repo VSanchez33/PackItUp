@@ -1,63 +1,90 @@
 package PackItUp;
 
-public class Item 
-{
-    private String itemName;    // Name of the item
-    private String date;        // Date the item was last updated
-    private boolean packStatus; // Status of the items packing (packed/unpacked)
-    private int amount;         // Amount of said item is in the box
-    private String owner;       // Name of the last person to update the item
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-    // Default values
-    public Item()
-    {
-        itemName = "Item";
-        date = "01/01/2000";
-        packStatus = false;
-        amount = 1;
-    }
+public class Item {
 
-    // Setters
-    public void setName(String newName)
-    {
-        itemName = newName;
-    }
-    public void setDate(int newDay, int newMonth, int newYear)
-    {
-        date = "" + newDay + "/" + newMonth + "/" + newYear;
-    }
-    public void setStatus(boolean newStatus)
-    {
-        packStatus = newStatus;
-    }
-    public void setQuantity(int newAmount)
-    {
-        amount = newAmount;
-    }
-    public void setOwner(String newOwner)
-    {
-        owner = newOwner;
+    private StringProperty itemName;
+    private StringProperty date;
+    private BooleanProperty packStatus;
+    private IntegerProperty amount;
+    private StringProperty owner;
+
+    public Item() {
+
+        itemName = new SimpleStringProperty("Item");
+        date = new SimpleStringProperty("01/01/2000");
+        packStatus = new SimpleBooleanProperty(false);
+        amount = new SimpleIntegerProperty(1);
+        owner = new SimpleStringProperty("Unknown");
+
+    } // end of constructor
+    
+
+    // Setters and Getters using JavaFX properties
+    public String getName() {
+        return itemName.get();
     }
 
-    // Getters
-    public String getName()
-    {
+    public void setName(String name) {
+        itemName.set(name);
+    }
+
+    public StringProperty itemNameProperty() {
         return itemName;
     }
-    public String getDate()
-    {
+
+    public String getDate() {
+        return date.get();
+    }
+
+    public void setDate(String date) {
+        this.date.set(date);
+    }
+
+    public StringProperty dateProperty() {
         return date;
     }
-    public boolean getStatus()
-    {
+
+    public boolean getStatus() {
+        return packStatus.get();
+    }
+
+    public void setStatus(boolean status) {
+        packStatus.set(status);
+    }
+
+    public BooleanProperty packStatusProperty() {
         return packStatus;
     }
-    public int getQuantity()
-    {
+
+    public int getQuantity() {
+        return amount.get();
+    }
+
+    public void setQuantity(int amount) {
+        this.amount.set(amount);
+    }
+
+    public IntegerProperty amountProperty() {
         return amount;
     }
-    public String getOwner()
-    {
+
+    public String getOwner() {
+        return owner.get();
+    }
+
+    public void setOwner(String owner) {
+        this.owner.set(owner);
+    }
+
+    public StringProperty ownerProperty() {
         return owner;
     }
-}
+
+} // end of Item

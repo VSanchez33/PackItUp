@@ -20,6 +20,7 @@ public class splashController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
-}
+   
+    } // end of goHome
+} // end of splashController
 

@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<<<<<<< HEAD
-<?import javafx.scene.layout.Pane?>
-=======
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
->>>>>>> Tabatha
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #cd9f61;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PackItUp.homeController">
    <children>
-<<<<<<< HEAD
-      <Button layoutX="267.0" layoutY="200.0" mnemonicParsing="false" onAction="#createItem" text="Add Item" />
-      <Text layoutX="224.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" textAlignment="CENTER">
-         <font>
-            <Font name="Futura Bold" size="48.0" />
-         </font>
-      </Text>
-=======
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
             <Button layoutX="549.0" layoutY="14.0" mnemonicParsing="false" onAction="#goMain" style="-fx-background-color: #000000;" text="Back" textFill="WHITE" />
@@ -34,23 +22,22 @@
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
             <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#createItem" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
-            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
+            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#deleteItem" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
             <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" wrappingWidth="105.52001953125">
                <font>
                   <Font name="Futura Bold" size="18.0" />
                </font>
             </Text>
-            <TableView layoutX="70.0" layoutY="170.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
-              <columns>
-                <TableColumn prefWidth="92.0" text="Name" />
-                <TableColumn prefWidth="92.0" text="Date" />
-                  <TableColumn prefWidth="92.0" text="Status" />
-                  <TableColumn prefWidth="92.0" text="Amount" />
-                  <TableColumn prefWidth="92.0" text="Owner" />
-              </columns>
+            <TableView fx:id="tableView" layoutX="70.0" layoutY="170.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
+               <columns>
+                  <TableColumn fx:id="nameColumn" prefWidth="92.0" text="Name" />
+                  <TableColumn fx:id="dateColumn" prefWidth="92.0" text="Date" />
+                  <TableColumn fx:id="statusColumn" prefWidth="92.0" text="Status" />
+                  <TableColumn fx:id="amountColumn" prefWidth="92.0" text="Amount" />
+                  <TableColumn fx:id="ownerColumn" prefWidth="92.0" text="Owner" />
+               </columns>
             </TableView>
          </children>
       </AnchorPane>
->>>>>>> Tabatha
    </children>
 </Pane>

@@ -22,17 +22,17 @@
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="259.0" layoutY="338.0" mnemonicParsing="false" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
+            <Button layoutX="259.0" layoutY="338.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
                <font>
                   <Font name="Futura Bold" size="21.0" />
-               </font></Button>
+               </font>
+            </Button>
             <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" wrappingWidth="105.52001953125">
                <font>
                   <Font name="Futura Bold" size="18.0" />
                </font>
             </Text>
-            <Button layoutX="545.0" layoutY="14.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: #000000;" text="Back" textFill="WHITE" />
-            <VBox layoutX="45.0" layoutY="177.0" prefHeight="152.0" prefWidth="511.0">
+            <VBox layoutX="45.0" layoutY="177.0" prefHeight="152.0" prefWidth="511.0" >
                <children>
                   <HBox prefHeight="29.0" prefWidth="567.0">
                      <children>
@@ -41,7 +41,8 @@
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField prefHeight="26.0" prefWidth="440.0" />
+                        <!-- Add fx:id to bind the TextField to the controller -->
+                        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="440.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
@@ -51,7 +52,8 @@
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <DatePicker prefHeight="26.0" prefWidth="428.0" />
+                        <!-- Add fx:id to bind the DatePicker to the controller -->
+                        <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="428.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
@@ -61,7 +63,8 @@
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField prefHeight="26.0" prefWidth="521.0" />
+                        <!-- Add fx:id to bind the TextField to the controller -->
+                        <TextField fx:id="statusField" prefHeight="26.0" prefWidth="521.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
@@ -71,7 +74,8 @@
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField prefHeight="26.0" prefWidth="399.0" />
+                        <!-- Add fx:id to bind the TextField to the controller -->
+                        <TextField fx:id="amountField" prefHeight="26.0" prefWidth="399.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
@@ -81,7 +85,8 @@
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField prefHeight="26.0" prefWidth="362.0" />
+                        <!-- Add fx:id to bind the TextField to the controller -->
+                        <TextField fx:id="ownerField" prefHeight="26.0" prefWidth="362.0" />
                      </children>
                   </HBox>
                </children>

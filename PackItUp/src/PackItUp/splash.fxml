@@ -20,11 +20,7 @@
                         <Font name="Futura Bold" size="13.0" />
                      </font>
                   </Button>
-<<<<<<< HEAD
-                  <Text layoutX="168.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up">
-=======
                   <Text layoutX="168.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" AnchorPane.bottomAnchor="200.64799880981445" AnchorPane.leftAnchor="167.5" AnchorPane.rightAnchor="168.47998046875" AnchorPane.topAnchor="137.12799835205078">
->>>>>>> Tabatha
                      <font>
                         <Font name="Futura Bold" size="48.0" />
                      </font>
