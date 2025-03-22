@@ -11,7 +11,7 @@ public class Box {
     private StringProperty boxName;
     private StringProperty boxDate;
     private StringProperty packingReason;
-    private ArrayList<Item> items;
+    private static ArrayList<Item> items;
     private IntegerProperty boxID;
     private IntegerProperty totalBoxes;
 
@@ -30,10 +30,12 @@ public class Box {
     {
         this.boxName.set(name);
     }
+
     public void setDate(String date)
     {
         this.boxDate.set(date);
     }
+
     public void setReason(String reason)
     {
         this.packingReason.set(reason);
@@ -42,13 +44,14 @@ public class Box {
     // Probably will not work with javafx properties
     public void addItems(Item item)
     {
-        this.items.add(item);
+        items.add(item);
     }
 
     public void setBoxID(int ID)
     {
         this.boxID.set(ID);
     }
+
     public void setTotalBoxes(int boxes)
     {
         this.totalBoxes.set(boxes);
@@ -58,10 +61,12 @@ public class Box {
     {
         return boxName.get();
     }
+    
     public String getDate()
     {
         return boxDate.get();
     }
+
     public String getReason()
     {
         return packingReason.get();
@@ -77,6 +82,7 @@ public class Box {
     {
         return boxID.get();
     }
+
     public int getTotal()
     {
         return totalBoxes.get();

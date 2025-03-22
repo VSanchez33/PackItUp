@@ -17,9 +17,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 
-public class homeController {
+public class itemHomeController {
 
     private ObservableList<Item> itemList = FXCollections.observableArrayList(); // List to store items
     private Stage stage;
@@ -40,8 +39,36 @@ public class homeController {
     private TableColumn<Item, String> ownerColumn;
 
 
+    @FXML
+    private void initialize() {
+        
+        // Set up each column to display the correct property
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
+    
+        // Initially populate the table with data from itemList
+        tableView.setItems(itemList);
+    
+        // Handle row click to select item
+        tableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Double click to edit
+                
+                Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    // Call edit method to open the Item creation screen for editing
+                    editItem(selectedItem);
+
+                } // end of if
+            } // end of if
+        }); // end of tableView
+    } // end of initialize
+
+
     // Button that opens Home Screen
-    public void goMain(ActionEvent event) throws IOException {
+    public void goBack(ActionEvent event) throws IOException {
         
         root = FXMLLoader.load(getClass().getResource("splash.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -100,34 +127,6 @@ public class homeController {
 
         } // end of else
     } // end of delete item
-
-
-    @FXML
-    private void initialize() {
-        
-        // Set up each column to display the correct property
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
-    
-        // Initially populate the table with data from itemList
-        tableView.setItems(itemList);
-    
-        // Handle row click to select item
-        tableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Double click to edit
-                
-                Item selectedItem = tableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    // Call edit method to open the Item creation screen for editing
-                    editItem(selectedItem);
-
-                } // end of if
-            } // end of if
-        }); // end of tableView
-    } // end of initialize
     
 
     // Open the editing view when an item is double-clicked

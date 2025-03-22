@@ -76,11 +76,15 @@ public class itemController {
         stage.setScene(scene);
         stage.show();
     
-    } // end of goMain
+    } // end of cancel
 
+
+
+    
+    //MIGHT NEED TO CHANGE BACK TO GO HOME
     // Save the changes made to the item
     @FXML
-    void goHome(ActionEvent event) throws IOException {
+    void saveItem(ActionEvent event) throws IOException {
         
         if (currentItem != null) {
             // If we're updating an existing item, apply changes
@@ -102,7 +106,7 @@ public class itemController {
             newItem.setOwner(ownerField.getText());
     
             // Add the new item to the list
-            itemList.add(newItem);
+            itemList.add(newItem); 
 
         } // end of else
 
@@ -111,7 +115,7 @@ public class itemController {
         Parent root = loader.load();
         
         // Pass the updated item list to homeController
-        homeController controller = loader.getController();
+        itemHomeController controller = loader.getController();
         controller.setItemList(itemList);  // Ensure the updated list is passed back to homeController
         
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -122,31 +126,31 @@ public class itemController {
     } // end of goHome
 
 
-    @FXML
-    private void saveItem(ActionEvent event) throws IOException {
+    // @FXML
+    // private void saveItem(ActionEvent event) throws IOException {
         
-        if (currentItem != null) {
-            // Update the selected item with the new values
-            currentItem.setName(nameField.getText());
-            currentItem.setDate(datePicker.getValue().toString());
-            currentItem.setStatus(Boolean.parseBoolean(statusField.getText()));
-            currentItem.setQuantity(Integer.parseInt(amountField.getText()));
-            currentItem.setOwner(ownerField.getText());
+    //     if (currentItem != null) {
+    //         // Update the selected item with the new values
+    //         currentItem.setName(nameField.getText());
+    //         currentItem.setDate(datePicker.getValue().toString());
+    //         currentItem.setStatus(Boolean.parseBoolean(statusField.getText()));
+    //         currentItem.setQuantity(Integer.parseInt(amountField.getText()));
+    //         currentItem.setOwner(ownerField.getText());
 
-        } // end of if
+    //     } // end of if
         
-        // Navigate back to the home screen with updated items
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-        Parent root = loader.load();
-        homeController controller = loader.getController();
-        controller.setItemList(itemList); // Pass the updated list back
+    //     // Navigate back to the home screen with updated items
+    //     FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+    //     Parent root = loader.load();
+    //     itemHomeController controller = loader.getController();
+    //     controller.setItemList(itemList); // Pass the updated list back
         
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    //     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    //     Scene scene = new Scene(root);
+    //     stage.setScene(scene);
+    //     stage.show();
 
-    } // end of saveItem
+    // } // end of saveItem
 
 
     // Setter to receive the list of items from homeController
