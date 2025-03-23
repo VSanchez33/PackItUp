@@ -46,12 +46,12 @@
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Reason:" wrappingWidth="153.32799911499023">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" wrappingWidth="153.32799911499023">
                            <font>
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="reasonField" prefHeight="26.0" prefWidth="440.0" />
+                        <TextField fx:id="ownerField" prefHeight="26.0" prefWidth="440.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">

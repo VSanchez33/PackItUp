@@ -31,10 +31,11 @@
             <TableView fx:id="tableView" layoutX="67.0" layoutY="172.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
                <columns>
                   <TableColumn fx:id="idColumn" prefWidth="92.0" text="ID" />
-                  <TableColumn fx:id="reasonColumn" prefWidth="104.0" text="Reason" />
+                  <TableColumn fx:id="ownerColumn" prefWidth="104.0" text="Owner" />
                   <TableColumn fx:id="boxNameColumn" prefWidth="264.0" text="Name" />
                </columns>
             </TableView>
+            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#openBox" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Open" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

@@ -24,6 +24,8 @@ public class itemHomeController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private static int selectedBoxID;
+    private DataManager dataManager = DataManager.getInstance();
 
     @FXML
     private TableView<Item> tableView;
@@ -40,7 +42,7 @@ public class itemHomeController {
 
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException{
         
         // Set up each column to display the correct property
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
@@ -49,9 +51,6 @@ public class itemHomeController {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
     
-        // Initially populate the table with data from itemList
-        tableView.setItems(itemList);
-    
         // Handle row click to select item
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double click to edit
@@ -59,48 +58,50 @@ public class itemHomeController {
                 Item selectedItem = tableView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
                     // Call edit method to open the Item creation screen for editing
-                    editItem(selectedItem);
-
+                    try {
+                        editItem(selectedItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } // end of if
             } // end of if
         }); // end of tableView
+
+
+        //debug code
+        System.out.println("itemHomeController initialized with selectedBoxID: " + selectedBoxID);
     } // end of initialize
 
 
-    // Button that opens Home Screen
+    // Button that opens Boxes Screen
     public void goBack(ActionEvent event) throws IOException {
-        
-        root = FXMLLoader.load(getClass().getResource("splash.fxml"));
+        root = FXMLLoader.load(getClass().getResource("box.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
     } // end of goMain
 
 
     // Button that opens the item creation screen
     public void createItem(ActionEvent event) throws IOException {
-       
-        System.out.println("Navigating to item creation screen...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         root = loader.load();
-    
+        
         itemController controller = loader.getController();
         controller.setItemList(itemList); // Pass item list to the creation controller
+        controller.setBoxID(selectedBoxID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
     } // end of createItem
 
 
     // Button that allows the user to delete the selected list item
     @FXML
     void deleteItem(ActionEvent event) throws IOException {
-
         // Get the selected item from the TableView
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -117,50 +118,37 @@ public class itemHomeController {
                 itemList.remove(selectedItem);
                 // Refresh the table
                 tableView.refresh();
-            
             } // end of if
         } // end of if
-        
         else {
             // Show a message if no item was selected
             System.out.println("No item selected for deletion.");
-
         } // end of else
     } // end of delete item
     
 
     // Open the editing view when an item is double-clicked
-    private void editItem(Item selectedItem) {
-        try {
-            // Navigate to item creation screen for editing
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
-            Parent root = loader.load();
-            
-            itemController controller = loader.getController();
-            
-            // Pass the selected item to the itemController for editing
-            controller.setItem(selectedItem);
-            controller.setItemList(itemList); // Pass the item list to the controller
+    private void editItem(Item selectedItem) throws IOException {
+        // Navigate to item creation screen for editing
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
+        Parent root = loader.load();
+        itemController controller = loader.getController();
         
-            Stage stage = (Stage) tableView.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } // end of try
-        
-        catch (IOException e) {
-            e.printStackTrace();
-        } // end of catch
+        // Pass the selected item to the itemController for editing
+        controller.setItem(selectedItem);
+        controller.setItemList(itemList); // Pass the item list to the controller
+    
+        Stage stage = (Stage) tableView.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     } // end of editItem
     
     
     public void setItemList(ObservableList<Item> itemList) {
-       
         this.itemList = itemList;
         tableView.setItems(itemList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
-   
     } // end of setItemList
 
     
@@ -169,7 +157,6 @@ public class itemHomeController {
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
     
         if (selectedItem != null) {
-
             // Navigate to item creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
             Parent root = loader.load();
@@ -186,14 +173,29 @@ public class itemHomeController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
         } // end of if
         
         else {
             // Handle case when no item is selected
             System.out.println("No item selected for editing.");
         } // end of else
-
     } // end of handleEditItem
 
-} // end of homeController
+
+    public void setSelectedBoxID(int id){
+        this.selectedBoxID = id;
+    }
+    
+    
+    public int getSelectedBoxID(){
+        return selectedBoxID;
+    }
+
+
+    public void displayItems(int boxID) {
+        //debug code
+        System.out.println("Displaying items for boxID: " + selectedBoxID);
+        tableView.setItems(dataManager.getItemList().filtered(item -> item.getBoxID() == selectedBoxID));
+        tableView.refresh();
+    }
+} // end of displayItems

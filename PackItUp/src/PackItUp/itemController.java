@@ -11,17 +11,19 @@ import javafx.stage.Stage;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableView;
 
     
 public class itemController {
-
+    
     private Stage stage;
     private Scene scene;
     private Parent root;
-
     private ObservableList<Item> itemList; // This will store the items from homeController
     private Item currentItem; // Store the item currently being edited
-    
+    private DataManager dataManager = DataManager.getInstance(); // Data Manager to store items
+    private static int boxID; // Box ID for the selected item
+
     @FXML
     private TextField nameField;
 
@@ -37,11 +39,13 @@ public class itemController {
     @FXML
     private TextField ownerField;
 
+    @FXML
+    private TableView<Item> itemsTable; // Table for the the items in box
+
 
     // Method to initialize the controller
     @FXML
     public void initialize() {
-        
         if (currentItem != null) {
             // Load the item data into the fields if there's an item to edit
             nameField.setText(currentItem.getName());
@@ -49,14 +53,12 @@ public class itemController {
             statusField.setText(Boolean.toString(currentItem.getStatus()));
             amountField.setText(Integer.toString(currentItem.getQuantity()));
             ownerField.setText(currentItem.getOwner());
-
         } // end of if
     } // end of initialize
 
 
     // Set the item to the list
     public void setItem(Item item) {
-
         this.currentItem = item;
         // Populate fields with the selected item data for editing
         nameField.setText(currentItem.getName());
@@ -64,93 +66,55 @@ public class itemController {
         statusField.setText(Boolean.toString(currentItem.getStatus()));
         amountField.setText(Integer.toString(currentItem.getQuantity()));
         ownerField.setText(currentItem.getOwner());
-
     } // end of setItem
 
     @FXML
     public void cancel (ActionEvent event) throws IOException {
-        
-        root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        root = FXMLLoader.load(getClass().getResource("items.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
     } // end of cancel
 
 
-
-    
-    //MIGHT NEED TO CHANGE BACK TO GO HOME
-    // Save the changes made to the item
     @FXML
-    void saveItem(ActionEvent event) throws IOException {
-        
+    private void saveItem(ActionEvent event) throws IOException {
         if (currentItem != null) {
-            // If we're updating an existing item, apply changes
+            // Update the selected item with the new values
             currentItem.setName(nameField.getText());
             currentItem.setDate(datePicker.getValue().toString());
             currentItem.setStatus(Boolean.parseBoolean(statusField.getText()));
             currentItem.setQuantity(Integer.parseInt(amountField.getText()));
             currentItem.setOwner(ownerField.getText());
-
-        } // end of if 
-        
-        else {
-            // If currentItem is null, create a new item
-            Item newItem = new Item();
-            newItem.setName(nameField.getText());
-            newItem.setDate(datePicker.getValue().toString());
-            newItem.setStatus(Boolean.parseBoolean(statusField.getText()));
-            newItem.setQuantity(Integer.parseInt(amountField.getText()));
-            newItem.setOwner(ownerField.getText());
-    
-            // Add the new item to the list
-            itemList.add(newItem); 
-
+        } // end of if
+        else{
+                Item newItem = new Item();
+                newItem.setName(nameField.getText());
+                newItem.setDate(datePicker.getValue().toString());
+                newItem.setStatus(Boolean.parseBoolean(statusField.getText()));
+                newItem.setQuantity(Integer.parseInt(amountField.getText()));
+                newItem.setOwner(ownerField.getText());
+                // Sets the ID for the box the item is stored in 
+                newItem.setBoxID(boxID);
+                // Add the new item to the list
+                itemList.add(newItem);
+                // Add the new item to the list universally
+                dataManager.getItemList().add(newItem);
         } // end of else
 
-        // Navigate back to home
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+        // Navigate back to the home screen with updated items
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
         Parent root = loader.load();
-        
-        // Pass the updated item list to homeController
         itemHomeController controller = loader.getController();
-        controller.setItemList(itemList);  // Ensure the updated list is passed back to homeController
-        
+        controller.setItemList(itemList); // Pass the updated list back
+        controller.displayItems(boxID);
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-    } // end of goHome
-
-
-    // @FXML
-    // private void saveItem(ActionEvent event) throws IOException {
-        
-    //     if (currentItem != null) {
-    //         // Update the selected item with the new values
-    //         currentItem.setName(nameField.getText());
-    //         currentItem.setDate(datePicker.getValue().toString());
-    //         currentItem.setStatus(Boolean.parseBoolean(statusField.getText()));
-    //         currentItem.setQuantity(Integer.parseInt(amountField.getText()));
-    //         currentItem.setOwner(ownerField.getText());
-
-    //     } // end of if
-        
-    //     // Navigate back to the home screen with updated items
-    //     FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-    //     Parent root = loader.load();
-    //     itemHomeController controller = loader.getController();
-    //     controller.setItemList(itemList); // Pass the updated list back
-        
-    //     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    //     Scene scene = new Scene(root);
-    //     stage.setScene(scene);
-    //     stage.show();
-
-    // } // end of saveItem
+    } // end of saveItem
 
 
     // Setter to receive the list of items from homeController
@@ -158,4 +122,9 @@ public class itemController {
         this.itemList = itemList;
     } // end of setItemList
 
+
+    // Sets the ID for the item of the current box
+    public void setBoxID(int boxID) { // Add this setter
+        this.boxID = boxID;
+    } // end of setBoxID
 } // end of itemController

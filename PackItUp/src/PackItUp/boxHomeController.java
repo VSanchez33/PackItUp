@@ -24,28 +24,27 @@ public class boxHomeController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private DataManager dataManager = DataManager.getInstance();
 
     @FXML
     private TableView<Box> tableView;
     @FXML
-    private TableColumn<Item, String> boxNameColumn;
+    private TableColumn<Box, String> boxNameColumn;
     @FXML
-    private TableColumn<Item, String> reasonColumn;
+    private TableColumn<Box, String> ownerColumn;
     @FXML
-    private TableColumn<Item, Integer> idColumn;
+    private TableColumn<Box, Integer> idColumn;
 
 
     @FXML
     private void initialize() {
-        
         // Set up each column to display the correct property
         idColumn.setCellValueFactory(new PropertyValueFactory<>("boxID"));
-        reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
+        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("boxOwner"));
         boxNameColumn.setCellValueFactory(new PropertyValueFactory<>("boxName"));
     
         // Initially populate the table with data from boxList
-
-        tableView.setItems(boxList);
+        tableView.setItems(dataManager.getBoxList());
     
         // Handle row click to select box
         tableView.setOnMouseClicked(event -> {
@@ -61,41 +60,55 @@ public class boxHomeController {
     } // end of initialize
 
 
+    public void openBox(ActionEvent event) throws IOException {
+        Box selectedBox = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedBox != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
+            Parent root = loader.load();
+
+            itemHomeController controller = loader.getController();
+            int boxID = selectedBox.getBoxID(); 
+            controller.setSelectedBoxID(boxID);
+            controller.displayItems(boxID);
+        
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } // end of if
+    } // end of opeBox
+
+
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
-        
         root = FXMLLoader.load(getClass().getResource("splash.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
     } // end of goMain
 
 
     // Button that opens the box creation screen
     public void createBox(ActionEvent event) throws IOException {
-       
         System.out.println("Navigating to box creation screen...");
-        // FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("boxCreation.fxml"));
         root = loader.load();
     
         boxController controller = loader.getController();
-        controller.setBoxList(boxList); // Pass box list to the creation controller
+        controller.setBoxList(boxList);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
-    } // end of createItem
+    } // end of createBox
 
 
     // Button that allows the user to delete the selected list box
     @FXML
     void deleteBox(ActionEvent event) throws IOException {
-
         // Get the selected box from the TableView
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
@@ -104,7 +117,7 @@ public class boxHomeController {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Confirm Deletion");
             alert.setHeaderText("Are you sure you want to delete this box?");
-            alert.setContentText(selectedBox.getName());
+            alert.setContentText(selectedBox.getBoxName());
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -119,7 +132,7 @@ public class boxHomeController {
             // Show a message if no box was selected
             System.out.println("No box selected for deletion.");
         } // end of else
-    } // end of delete box
+    } // end of deleteBox
     
 
     // Open the editing view when an box is double-clicked
@@ -145,47 +158,50 @@ public class boxHomeController {
         catch (IOException e) {
             e.printStackTrace();
         } // end of catch
-    } // end of editItem
+    } // end of editBox
+
 
     public void setBoxList(ObservableList<Box> boxList) {
-       
         this.boxList = boxList;
         tableView.setItems(boxList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
-   
     } // end of setBoxList
 
     
     @FXML
-    private void handleEditItem(ActionEvent event) throws IOException {
+    private void handleEditBox(ActionEvent event) throws IOException {
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
     
         if (selectedBox != null) {
 
             // Navigate to box creation screen for editing
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+
+
+
+            // MIGHT NEED TO CHANGE BACK
+            // FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("boxCreation.fxml"));
             Parent root = loader.load();
+
+
     
             // Get the controller of ItemCreation.fxml
             boxController controller = loader.getController();
             
             // Set the current box to the selected box for editing
             controller.setBox(selectedBox);
-            controller.setBoxList(boxList); // Pass the box list for saving new boxes
+            controller.setBoxList(boxList); 
     
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
         } // end of if
         
         else {
             // Handle case when no box is selected
             System.out.println("No box selected for editing.");
         } // end of else
-
-    } // end of handleEditItem
-
-} // end of homeController
+    } // end of handleEditBox
+} // end of boxHomeController
