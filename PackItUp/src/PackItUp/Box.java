@@ -29,7 +29,7 @@ public class Box {
         boxID = new SimpleIntegerProperty(1);
         totalBoxes = new SimpleIntegerProperty(1);
     } // End of constructor
-
+    
     public StringProperty boxNameProperty(){
         return boxName;
     }

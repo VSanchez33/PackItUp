@@ -1,6 +1,12 @@
 package PackItUp;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,9 +14,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
     
@@ -19,6 +27,7 @@ public class itemController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     private ObservableList<Item> itemList; // This will store the items from homeController
     private Item currentItem; // Store the item currently being edited
     private DataManager dataManager = DataManager.getInstance(); // Data Manager to store items
@@ -46,6 +55,7 @@ public class itemController {
     // Method to initialize the controller
     @FXML
     public void initialize() {
+
         if (currentItem != null) {
             // Load the item data into the fields if there's an item to edit
             nameField.setText(currentItem.getName());
@@ -54,6 +64,7 @@ public class itemController {
             amountField.setText(Integer.toString(currentItem.getQuantity()));
             ownerField.setText(currentItem.getOwner());
         } // end of if
+
     } // end of initialize
 
 
@@ -108,12 +119,13 @@ public class itemController {
         Parent root = loader.load();
         itemHomeController controller = loader.getController();
         controller.setItemList(itemList); // Pass the updated list back
-        controller.displayItems(boxID);
+        //controller.displayItems(boxID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+   
     } // end of saveItem
 
 
@@ -127,4 +139,5 @@ public class itemController {
     public void setBoxID(int boxID) { // Add this setter
         this.boxID = boxID;
     } // end of setBoxID
+
 } // end of itemController

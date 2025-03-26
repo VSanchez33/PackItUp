@@ -1,6 +1,11 @@
 package PackItUp;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +43,7 @@ public class boxHomeController {
 
     @FXML
     private void initialize() {
+
         // Set up each column to display the correct property
         idColumn.setCellValueFactory(new PropertyValueFactory<>("boxID"));
         ownerColumn.setCellValueFactory(new PropertyValueFactory<>("boxOwner"));
@@ -46,6 +52,9 @@ public class boxHomeController {
         // Initially populate the table with data from boxList
         tableView.setItems(dataManager.getBoxList());
     
+        // Load data
+        loadData();
+        
         // Handle row click to select box
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double click to edit
@@ -54,6 +63,7 @@ public class boxHomeController {
                 if (selectedItem != null) {
                     // Call edit method to open the Item creation screen for editing
                     editBox(selectedItem);
+                    saveData();
                 } // end of if
             } // end of if
         }); // end of tableView
@@ -70,7 +80,7 @@ public class boxHomeController {
             itemHomeController controller = loader.getController();
             int boxID = selectedBox.getBoxID(); 
             controller.setSelectedBoxID(boxID);
-            controller.displayItems(boxID);
+            //controller.displayItems(boxID);
         
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -125,13 +135,18 @@ public class boxHomeController {
                 boxList.remove(selectedBox);
                 // Refresh the table
                 tableView.refresh();
+                
             } // end of if
+
         } // end of if
         
         else {
             // Show a message if no box was selected
             System.out.println("No box selected for deletion.");
         } // end of else
+
+        saveData();
+
     } // end of deleteBox
     
 
@@ -165,6 +180,8 @@ public class boxHomeController {
         this.boxList = boxList;
         tableView.setItems(boxList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
+    
+        saveData();
     } // end of setBoxList
 
     
@@ -203,5 +220,67 @@ public class boxHomeController {
             // Handle case when no box is selected
             System.out.println("No box selected for editing.");
         } // end of else
+
+        saveData();
+
     } // end of handleEditBox
+
+    public void saveData() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("boxes.csv"))) {
+            // Write the header (optional)
+            writer.write("BoxID,BoxName,BoxDate,BoxOwner");
+            writer.newLine();
+            
+            // Write each box in the list to the CSV file
+            for (Box box : boxList) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(box.getBoxID()).append(",");
+                sb.append(box.getBoxName()).append(",");
+                sb.append(box.getBoxDate()).append(",");
+                sb.append(box.getBoxOwner());
+                writer.write(sb.toString());
+                writer.newLine(); // Ensure each box is written on a new line
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadData() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("boxes.csv"))) {
+            String line;
+            ArrayList<Box> loadedList = new ArrayList<>();
+            
+            // Skip header line
+            reader.readLine();
+            
+            // Read each line and create a Box object
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                
+                // Assuming the CSV has columns in the order: BoxID, BoxName, BoxDate, BoxOwner
+                int boxID = Integer.parseInt(data[0]);
+                String boxName = data[1];
+                String boxDate = data[2];
+                String boxOwner = data[3];
+    
+                // Create a new Box object and add it to the list
+                Box box = new Box();
+                box.setBoxID(boxID);
+                box.setBoxName(boxName);
+                box.setBoxDate(boxDate);
+                box.setBoxOwner(boxOwner);
+
+                loadedList.add(box);
+            }
+            
+            // Update the boxList and refresh the table
+            boxList.setAll(loadedList);
+            tableView.setItems(boxList);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 } // end of boxHomeController

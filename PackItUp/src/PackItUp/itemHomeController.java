@@ -1,6 +1,11 @@
 package PackItUp;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -43,14 +48,20 @@ public class itemHomeController {
 
     @FXML
     private void initialize() throws IOException{
-        
+
+        //Load data
+        loadData();
+
         // Set up each column to display the correct property
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
-    
+
+        //tableView.setItems(dataManager.getItemList());
+        tableView.setItems(itemList);
+
         // Handle row click to select item
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double click to edit
@@ -60,6 +71,7 @@ public class itemHomeController {
                     // Call edit method to open the Item creation screen for editing
                     try {
                         editItem(selectedItem);
+                        saveData();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -67,6 +79,7 @@ public class itemHomeController {
             } // end of if
         }); // end of tableView
 
+        saveData();
 
         //debug code
         System.out.println("itemHomeController initialized with selectedBoxID: " + selectedBoxID);
@@ -75,6 +88,7 @@ public class itemHomeController {
 
     // Button that opens Boxes Screen
     public void goBack(ActionEvent event) throws IOException {
+        saveData();
         root = FXMLLoader.load(getClass().getResource("box.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -85,12 +99,14 @@ public class itemHomeController {
 
     // Button that opens the item creation screen
     public void createItem(ActionEvent event) throws IOException {
+        saveData();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         root = loader.load();
         
         itemController controller = loader.getController();
         controller.setItemList(itemList); // Pass item list to the creation controller
-        controller.setBoxID(selectedBoxID);
+        //controller.setBoxID(selectedBoxID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -99,32 +115,35 @@ public class itemHomeController {
     } // end of createItem
 
 
-    // Button that allows the user to delete the selected list item
-    @FXML
-    void deleteItem(ActionEvent event) throws IOException {
-        // Get the selected item from the TableView
-        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+   // Button that allows the user to delete the selected list item
+   @FXML
+void deleteItem(ActionEvent event) throws IOException {
 
-        if (selectedItem != null) {
-            // Show a confirmation dialog before deletion
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Deletion");
-            alert.setHeaderText("Are you sure you want to delete this item?");
-            alert.setContentText(selectedItem.getName());
+    // Get the selected item from the TableView
+    Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Remove the selected item from the item list
-                itemList.remove(selectedItem);
-                // Refresh the table
-                tableView.refresh();
-            } // end of if
-        } // end of if
-        else {
-            // Show a message if no item was selected
-            System.out.println("No item selected for deletion.");
-        } // end of else
-    } // end of delete item
+    if (selectedItem != null) {
+        // Show a confirmation dialog before deletion
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete this item?");
+        alert.setContentText(selectedItem.getName());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Remove the selected item from the item list
+            itemList.remove(selectedItem);
+            tableView.setItems(itemList); // Re-bind the updated list to the TableView
+            tableView.refresh(); // Ensure the table view is refreshed
+
+            // Save the updated list to the CSV file
+            saveData();
+        }
+    } else {
+        // Show a message if no item was selected
+        System.out.println("No item selected for deletion.");
+    }
+}
     
 
     // Open the editing view when an item is double-clicked
@@ -149,6 +168,8 @@ public class itemHomeController {
         this.itemList = itemList;
         tableView.setItems(itemList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
+    
+        saveData();
     } // end of setItemList
 
     
@@ -173,12 +194,17 @@ public class itemHomeController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+
+            saveData();
         } // end of if
         
         else {
             // Handle case when no item is selected
             System.out.println("No item selected for editing.");
         } // end of else
+
+        saveData();
+        
     } // end of handleEditItem
 
 
@@ -192,10 +218,74 @@ public class itemHomeController {
     }
 
 
-    public void displayItems(int boxID) {
-        //debug code
-        System.out.println("Displaying items for boxID: " + selectedBoxID);
-        tableView.setItems(dataManager.getItemList().filtered(item -> item.getBoxID() == selectedBoxID));
-        tableView.refresh();
+    // public void displayItems(int boxID) {
+    //     //debug code
+    //     loadData();
+    //     System.out.println("Displaying items for boxID: " + selectedBoxID);
+    //     tableView.setItems(dataManager.getItemList().filtered(item -> item.getBoxID() == selectedBoxID));
+    //     tableView.refresh();
+    // }
+
+    public void saveData() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("items.csv"))) {
+        // Write the header (optional)
+        writer.write("ItemName,Date,PackStatus,Amount,Owner");
+        writer.newLine();
+        
+        // Write each item in the list to the CSV file
+        for (Item item : itemList) {
+            
+            StringBuilder sb = new StringBuilder();
+                sb.append(item.getName()).append(",");
+                sb.append(item.getDate()).append(",");
+                sb.append(item.getStatus()).append(",");
+                sb.append(item.getQuantity()).append(",");
+                sb.append(item.getOwner());
+                writer.write(sb.toString());
+                writer.newLine(); // Ensure each item is written on a new line
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        }
     }
+
+    public void loadData() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("items.csv"))) {
+            String line;
+            ArrayList<Item> loadedList = new ArrayList<>();
+            
+            // Skip header line
+            reader.readLine();
+            
+            // Read each line and create an Item object
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                
+                // Assuming the CSV has columns in the order: ItemName, Date, PackStatus, Amount, Owner
+                String itemName = data[0];
+                String date = data[1];
+                Boolean packStatus = Boolean.parseBoolean(data[2]);
+                int amount = Integer.parseInt(data[3]);
+                String owner = data[4];
+
+                // Create a new Item object and add it to the list
+                Item item = new Item();
+                item.setName(itemName);
+                item.setDate(date);
+                item.setStatus(packStatus);
+                item.setQuantity(amount);
+                item.setOwner(owner);
+
+                loadedList.add(item);
+            }
+            
+            // Update the itemList and refresh the table
+            itemList.setAll(loadedList);
+            tableView.setItems(itemList);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 } // end of displayItems
