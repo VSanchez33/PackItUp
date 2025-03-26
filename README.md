@@ -7,8 +7,7 @@
 Last updated: 24 - Feb - 2025   
 
 Developers:   
-Austin Matthys   
-Aaron Escalera   
+Austin Matthys     
 Bryson Young   
 Vincent Sanchez   
 Tabatha Valverde   
