@@ -1,3 +1,9 @@
+/*
+ * Authors:
+ *      Tabatha Valverde
+ *      Vincent Sanchez
+ */
+
 package PackItUp;
 
 import java.io.IOException;
@@ -30,7 +36,7 @@ public class boxController {
     private TextField nameField;
     
 
-
+    // Author: 
     // Method to initialize the controller
     @FXML
     public void initialize() {
@@ -43,6 +49,7 @@ public class boxController {
     } // end of initialize
 
 
+    // Author: Tabatha Valverde
     // Set the box to the list
     public void setBox(Box box) {
         this.currentBox = box;
@@ -53,6 +60,7 @@ public class boxController {
     } // end of setBox
 
 
+    // Author: Tabatha Valverde
     // Cancels item creation or edit 
     @FXML
     public void cancel (ActionEvent event) throws IOException {
@@ -69,6 +77,7 @@ public class boxController {
     } // end of cancel    
 
 
+    // Author: Tabatha Valverde and Vincent Sanchez
     // Saves the box created or edited
     @FXML
     void saveBox(ActionEvent event) throws IOException {
@@ -105,7 +114,7 @@ public class boxController {
     } // end of saveBox
 
 
-
+    // Author: Tabatha Valverde
     // Setter to receive the list of boxess from homeController
     public void setBoxList(ObservableList<Box> boxList) {
         this.boxList = boxList;

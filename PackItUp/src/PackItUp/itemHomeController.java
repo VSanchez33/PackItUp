@@ -1,3 +1,9 @@
+/*
+ * Authors: 
+ *      Tabatha Valverde
+ *      Vincent Sanchez
+ */
+
 package PackItUp;
 
 import java.io.BufferedReader;
@@ -46,6 +52,7 @@ public class itemHomeController {
     private TableColumn<Item, String> ownerColumn;
 
 
+    // Author: Tabatha Valverde
     @FXML
     private void initialize() throws IOException{
 
@@ -86,6 +93,7 @@ public class itemHomeController {
     } // end of initialize
 
 
+    // Author: Tabatha Valverde
     // Button that opens Boxes Screen
     public void goBack(ActionEvent event) throws IOException {
         saveData();
@@ -97,6 +105,7 @@ public class itemHomeController {
     } // end of goMain
 
 
+    // Author: Tabatha Valverde
     // Button that opens the item creation screen
     public void createItem(ActionEvent event) throws IOException {
         saveData();
@@ -106,6 +115,8 @@ public class itemHomeController {
         
         itemController controller = loader.getController();
         controller.setItemList(itemList); // Pass item list to the creation controller
+
+        // removed because it caused error
         //controller.setBoxID(selectedBoxID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -115,37 +126,39 @@ public class itemHomeController {
     } // end of createItem
 
 
-   // Button that allows the user to delete the selected list item
-   @FXML
-void deleteItem(ActionEvent event) throws IOException {
+    // Author: Tabatha Valverde
+    // Button that allows the user to delete the selected list item
+    @FXML
+    void deleteItem(ActionEvent event) throws IOException {
 
-    // Get the selected item from the TableView
-    Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+        // Get the selected item from the TableView
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
-    if (selectedItem != null) {
-        // Show a confirmation dialog before deletion
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Are you sure you want to delete this item?");
-        alert.setContentText(selectedItem.getName());
+        if (selectedItem != null) {
+            // Show a confirmation dialog before deletion
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setHeaderText("Are you sure you want to delete this item?");
+            alert.setContentText(selectedItem.getName());
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Remove the selected item from the item list
-            itemList.remove(selectedItem);
-            tableView.setItems(itemList); // Re-bind the updated list to the TableView
-            tableView.refresh(); // Ensure the table view is refreshed
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Remove the selected item from the item list
+                itemList.remove(selectedItem);
+                tableView.setItems(itemList); // Re-bind the updated list to the TableView
+                tableView.refresh(); // Ensure the table view is refreshed
 
-            // Save the updated list to the CSV file
-            saveData();
+                // Save the updated list to the CSV file
+                saveData();
+            }
+        } else {
+            // Show a message if no item was selected
+            System.out.println("No item selected for deletion.");
         }
-    } else {
-        // Show a message if no item was selected
-        System.out.println("No item selected for deletion.");
     }
-}
     
 
+    // Author: Tabatha Valverde
     // Open the editing view when an item is double-clicked
     private void editItem(Item selectedItem) throws IOException {
         // Navigate to item creation screen for editing
@@ -164,6 +177,7 @@ void deleteItem(ActionEvent event) throws IOException {
     } // end of editItem
     
     
+    // Author: Tabatha Valverde
     public void setItemList(ObservableList<Item> itemList) {
         this.itemList = itemList;
         tableView.setItems(itemList);  // Update the table with the new list
@@ -173,6 +187,8 @@ void deleteItem(ActionEvent event) throws IOException {
     } // end of setItemList
 
     
+
+    // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     private void handleEditItem(ActionEvent event) throws IOException {
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
@@ -208,16 +224,20 @@ void deleteItem(ActionEvent event) throws IOException {
     } // end of handleEditItem
 
 
+    // Author: Vincent Sanchez
     public void setSelectedBoxID(int id){
         this.selectedBoxID = id;
     }
     
     
+    // Author: Vincent Sanchez
     public int getSelectedBoxID(){
         return selectedBoxID;
     }
 
 
+    // removed because it causes errors
+    // Author: Vincent Sanchez
     // public void displayItems(int boxID) {
     //     //debug code
     //     loadData();
@@ -226,6 +246,8 @@ void deleteItem(ActionEvent event) throws IOException {
     //     tableView.refresh();
     // }
 
+
+    // Author: Tabatha Valverde
     public void saveData() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("items.csv"))) {
         // Write the header (optional)
@@ -247,8 +269,10 @@ void deleteItem(ActionEvent event) throws IOException {
     } catch (IOException e) {
         e.printStackTrace();
         }
-    }
+    } // end of saveItems
 
+
+    // Author: Tabatha Valverde
     public void loadData() {
         try (BufferedReader reader = new BufferedReader(new FileReader("items.csv"))) {
             String line;
@@ -286,6 +310,6 @@ void deleteItem(ActionEvent event) throws IOException {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    } //end of loadItems
 
-} // end of displayItems
+} // end of itemHomeController

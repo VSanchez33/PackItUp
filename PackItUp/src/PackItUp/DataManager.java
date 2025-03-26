@@ -1,3 +1,8 @@
+/*
+ * Authors: 
+ *      Vincent Sanchez
+ */
+
 package PackItUp;
 
 import javafx.collections.FXCollections;

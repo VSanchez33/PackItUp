@@ -1,3 +1,9 @@
+/*
+ * Authors: 
+ *      Tabatha Valverde
+ *      Vincent Sanchez
+ */
+
 package PackItUp;
 
 import java.io.BufferedReader;
@@ -52,6 +58,7 @@ public class itemController {
     private TableView<Item> itemsTable; // Table for the the items in box
 
 
+    // Author: Tabatha Valverde
     // Method to initialize the controller
     @FXML
     public void initialize() {
@@ -68,6 +75,7 @@ public class itemController {
     } // end of initialize
 
 
+    // Author: Tabatha Valverde
     // Set the item to the list
     public void setItem(Item item) {
         this.currentItem = item;
@@ -79,6 +87,8 @@ public class itemController {
         ownerField.setText(currentItem.getOwner());
     } // end of setItem
 
+
+    // Author: Tabatha Valverde
     @FXML
     public void cancel (ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("items.fxml"));
@@ -89,6 +99,7 @@ public class itemController {
     } // end of cancel
 
 
+    // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     private void saveItem(ActionEvent event) throws IOException {
         if (currentItem != null) {
@@ -129,12 +140,14 @@ public class itemController {
     } // end of saveItem
 
 
+    // Author: Tabatha Valverde
     // Setter to receive the list of items from homeController
     public void setItemList(ObservableList<Item> itemList) {
         this.itemList = itemList;
     } // end of setItemList
 
 
+    // Author: Tabatha Valverde
     // Sets the ID for the item of the current box
     public void setBoxID(int boxID) { // Add this setter
         this.boxID = boxID;

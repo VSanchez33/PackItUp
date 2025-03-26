@@ -1,3 +1,9 @@
+/*
+ * Authors: 
+ *      Tabatha Valverde
+ *      Vincent Sanchez
+ */
+
 package PackItUp;
 
 import java.io.BufferedReader;
@@ -41,6 +47,7 @@ public class boxHomeController {
     private TableColumn<Box, Integer> idColumn;
 
 
+    // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     private void initialize() {
 
@@ -69,7 +76,7 @@ public class boxHomeController {
         }); // end of tableView
     } // end of initialize
 
-
+    // Author: Tabatha Valverde and Vincent Sanchez
     public void openBox(ActionEvent event) throws IOException {
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
@@ -80,6 +87,8 @@ public class boxHomeController {
             itemHomeController controller = loader.getController();
             int boxID = selectedBox.getBoxID(); 
             controller.setSelectedBoxID(boxID);
+
+            // removed because it caused error
             //controller.displayItems(boxID);
         
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -90,6 +99,7 @@ public class boxHomeController {
     } // end of opeBox
 
 
+    // Author: Tabatha Valverde 
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("splash.fxml"));
@@ -100,6 +110,7 @@ public class boxHomeController {
     } // end of goMain
 
 
+    // Author: Tabatha Valverde 
     // Button that opens the box creation screen
     public void createBox(ActionEvent event) throws IOException {
         System.out.println("Navigating to box creation screen...");
@@ -116,6 +127,7 @@ public class boxHomeController {
     } // end of createBox
 
 
+    // Author: Tabatha Valverde
     // Button that allows the user to delete the selected list box
     @FXML
     void deleteBox(ActionEvent event) throws IOException {
@@ -150,6 +162,7 @@ public class boxHomeController {
     } // end of deleteBox
     
 
+    // Author: Tabatha Valverde
     // Open the editing view when an box is double-clicked
     private void editBox(Box selectedBox) {
         try {
@@ -176,6 +189,7 @@ public class boxHomeController {
     } // end of editBox
 
 
+    // Author: Tabatha Valverde
     public void setBoxList(ObservableList<Box> boxList) {
         this.boxList = boxList;
         tableView.setItems(boxList);  // Update the table with the new list
@@ -185,6 +199,7 @@ public class boxHomeController {
     } // end of setBoxList
 
     
+    // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     private void handleEditBox(ActionEvent event) throws IOException {
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
@@ -225,6 +240,9 @@ public class boxHomeController {
 
     } // end of handleEditBox
 
+
+    // Author: Tabatha Valverde
+    // Saves the boxes to the csv file
     public void saveData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("boxes.csv"))) {
             // Write the header (optional)
@@ -246,6 +264,8 @@ public class boxHomeController {
         }
     }
 
+    // Author: Tabatha Valverde
+    // Loads the boxes from the csv
     public void loadData() {
         try (BufferedReader reader = new BufferedReader(new FileReader("boxes.csv"))) {
             String line;
