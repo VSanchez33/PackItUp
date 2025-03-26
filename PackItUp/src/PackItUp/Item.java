@@ -1,0 +1,90 @@
+package PackItUp;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Item {
+
+    private StringProperty itemName;
+    private StringProperty date;
+    private BooleanProperty packStatus;
+    private IntegerProperty amount;
+    private StringProperty owner;
+
+    public Item() {
+
+        itemName = new SimpleStringProperty("Item");
+        date = new SimpleStringProperty("01/01/2000");
+        packStatus = new SimpleBooleanProperty(false);
+        amount = new SimpleIntegerProperty(1);
+        owner = new SimpleStringProperty("Unknown");
+
+    } // end of constructor
+    
+
+    // Setters and Getters using JavaFX properties
+    public String getName() {
+        return itemName.get();
+    }
+
+    public void setName(String name) {
+        itemName.set(name);
+    }
+
+    public StringProperty itemNameProperty() {
+        return itemName;
+    }
+
+    public String getDate() {
+        return date.get();
+    }
+
+    public void setDate(String date) {
+        this.date.set(date);
+    }
+
+    public StringProperty dateProperty() {
+        return date;
+    }
+
+    public boolean getStatus() {
+        return packStatus.get();
+    }
+
+    public void setStatus(boolean status) {
+        packStatus.set(status);
+    }
+
+    public BooleanProperty packStatusProperty() {
+        return packStatus;
+    }
+
+    public int getQuantity() {
+        return amount.get();
+    }
+
+    public void setQuantity(int amount) {
+        this.amount.set(amount);
+    }
+
+    public IntegerProperty amountProperty() {
+        return amount;
+    }
+
+    public String getOwner() {
+        return owner.get();
+    }
+
+    public void setOwner(String owner) {
+        this.owner.set(owner);
+    }
+
+    public StringProperty ownerProperty() {
+        return owner;
+    }
+
+} // end of Item

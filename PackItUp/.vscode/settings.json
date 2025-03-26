@@ -1,5 +1,6 @@
 {
     "java.project.referencedLibraries": [
+<<<<<<< HEAD
         "lib/**/*.jar",
         "/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib/javafx-swt.jar",
         "/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib/javafx.base.jar",
@@ -9,5 +10,9 @@
         "/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib/javafx.media.jar",
         "/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib/javafx.swing.jar",
         "/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib/javafx.web.jar"
+=======
+        "${workspaceFolder}/javafx-sdk-23.0.2/lib/**/*.jar",
+        "javafx-sdk-23.0.2/lib/**/*.jar"
+>>>>>>> main
     ]
 }
