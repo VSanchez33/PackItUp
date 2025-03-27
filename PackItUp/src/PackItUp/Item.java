@@ -1,3 +1,9 @@
+/*
+ * Authors: 
+ *      Bryson Young
+ *      Tabatha Valverde
+ */
+
 package PackItUp;
 
 import javafx.beans.property.BooleanProperty;
@@ -9,6 +15,7 @@ import javafx.beans.property.StringProperty;
 
 public class Item {
 
+    // Tabatha: updated the elemets to e properties to work with the table
     private StringProperty itemName;
     private StringProperty date;
     private BooleanProperty packStatus;
@@ -16,6 +23,7 @@ public class Item {
     private StringProperty owner;
     private int boxID;
 
+    // Everything else Bryson implemented 
     public Item() {
         itemName = new SimpleStringProperty("Item");
         date = new SimpleStringProperty("01/01/2000");
