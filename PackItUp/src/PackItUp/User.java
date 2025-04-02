@@ -15,6 +15,28 @@ import javafx.collections.ObservableList;
 public class User {
 
     private StringProperty userName;
-    private ObservableList<Box> boxList;
+    private IntegerProperty userID;
+    // location 
+
+    public User() {
+        userName = new SimpleStringProperty("UserName");
+        userID = new SimpleIntegerProperty(1);
+        // Location
+    }
+
+    // Setters and getters
+    public void setName(String newName) {
+        userName.set(newName);
+    }
+    public String getName() {
+        return userName.get();
+    }
+    public void setID(int newID) {
+        userID.set(newID);
+    }
+    public int getID() {
+        return userID.get();
+    }
+    // Add location
     
 }
