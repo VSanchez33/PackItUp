@@ -14,6 +14,10 @@ public class DataManager {
     private ObservableList<Item> itemList = FXCollections.observableArrayList();
     private ObservableList<Box> boxList = FXCollections.observableArrayList();
 
+    private DataManager(){
+        System.out.println("DataManager Initialize");
+    }
+
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
