@@ -10,18 +10,17 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 
 public class User {
 
     private StringProperty userName;
     private IntegerProperty userID;
-    // location 
+    private ArrayList<Location> locations;
 
     public User() {
         userName = new SimpleStringProperty("UserName");
         userID = new SimpleIntegerProperty(1);
-        // Location
+        locations = new ArrayList<>();
     }
 
     // Setters and getters
@@ -37,6 +36,13 @@ public class User {
     public int getID() {
         return userID.get();
     }
-    // Add location
+    
+
+    public void addLocations(Location location) {
+        locations.add(location);
+    }
+    public ArrayList<Location> getLocations() {
+        return locations;
+    }
     
 }
