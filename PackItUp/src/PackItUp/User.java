@@ -36,11 +36,11 @@ public class User {
     public int getID() {
         return userID.get();
     }
-    
 
     public void addLocations(Location location) {
         locations.add(location);
     }
+
     public ArrayList<Location> getLocations() {
         return locations;
     }

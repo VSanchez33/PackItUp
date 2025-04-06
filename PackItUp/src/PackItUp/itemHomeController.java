@@ -36,7 +36,6 @@ public class itemHomeController {
     private Scene scene;
     private Parent root;
     private static int selectedBoxID;
-    private DataManager dataManager = DataManager.getInstance();
 
     @FXML
     private TableView<Item> tableView;
@@ -55,7 +54,6 @@ public class itemHomeController {
     // Author: Tabatha Valverde
     @FXML
     private void initialize() throws IOException{
-
         //Load data
         loadData();
 
@@ -66,8 +64,10 @@ public class itemHomeController {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
 
-        //tableView.setItems(dataManager.getItemList());
-        tableView.setItems(itemList);
+        displayItems(selectedBoxID);
+
+        // Load data
+        loadData();
 
         // Handle row click to select item
         tableView.setOnMouseClicked(event -> {
@@ -87,7 +87,6 @@ public class itemHomeController {
         }); // end of tableView
 
         saveData();
-
         //debug code
         System.out.println("itemHomeController initialized with selectedBoxID: " + selectedBoxID);
     } // end of initialize
@@ -116,8 +115,7 @@ public class itemHomeController {
         itemController controller = loader.getController();
         controller.setItemList(itemList); // Pass item list to the creation controller
 
-        // removed because it caused error
-        //controller.setBoxID(selectedBoxID);
+        controller.setBoxID(selectedBoxID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -130,7 +128,6 @@ public class itemHomeController {
     // Button that allows the user to delete the selected list item
     @FXML
     void deleteItem(ActionEvent event) throws IOException {
-
         // Get the selected item from the TableView
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -147,7 +144,6 @@ public class itemHomeController {
                 itemList.remove(selectedItem);
                 tableView.setItems(itemList); // Re-bind the updated list to the TableView
                 tableView.refresh(); // Ensure the table view is refreshed
-
                 // Save the updated list to the CSV file
                 saveData();
             }
@@ -155,6 +151,7 @@ public class itemHomeController {
             // Show a message if no item was selected
             System.out.println("No item selected for deletion.");
         }
+        saveData();
     }
     
 
@@ -164,6 +161,7 @@ public class itemHomeController {
         // Navigate to item creation screen for editing
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         Parent root = loader.load();
+        
         itemController controller = loader.getController();
         
         // Pass the selected item to the itemController for editing
@@ -212,57 +210,57 @@ public class itemHomeController {
             stage.show();
 
             saveData();
-        } // end of if
-        
+        } // end of ifs
         else {
             // Handle case when no item is selected
             System.out.println("No item selected for editing.");
         } // end of else
-
         saveData();
-        
     } // end of handleEditItem
 
 
     // Author: Vincent Sanchez
+    // Set the boxId to get the correct items
     public void setSelectedBoxID(int id){
         this.selectedBoxID = id;
+        loadData(); // Reload data when the selected box changes
+        displayItems(selectedBoxID);
     }
     
     
     // Author: Vincent Sanchez
+    // get the box id to display the correct items
     public int getSelectedBoxID(){
         return selectedBoxID;
     }
 
 
-    // removed because it causes errors
     // Author: Vincent Sanchez
-    // public void displayItems(int boxID) {
-    //     //debug code
-    //     loadData();
-    //     System.out.println("Displaying items for boxID: " + selectedBoxID);
-    //     tableView.setItems(dataManager.getItemList().filtered(item -> item.getBoxID() == selectedBoxID));
-    //     tableView.refresh();
-    // }
+    // Displays the items from correct box
+    public void displayItems(int boxID) {
+        ObservableList<Item> filteredList = itemList.filtered(item -> item.getBoxID() == boxID);
+        saveData();
+        tableView.setItems(filteredList);
+        tableView.refresh();
+    }
 
 
     // Author: Tabatha Valverde
     public void saveData() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("items.csv"))) {
         // Write the header (optional)
-        writer.write("ItemName,Date,PackStatus,Amount,Owner");
+        writer.write("ItemName,Date,PackStatus,Amount,Owner,BoxID");
         writer.newLine();
         
         // Write each item in the list to the CSV file
         for (Item item : itemList) {
-            
             StringBuilder sb = new StringBuilder();
                 sb.append(item.getName()).append(",");
                 sb.append(item.getDate()).append(",");
                 sb.append(item.getStatus()).append(",");
                 sb.append(item.getQuantity()).append(",");
-                sb.append(item.getOwner());
+                sb.append(item.getOwner()).append(",");
+                sb.append(item.getBoxID());
                 writer.write(sb.toString());
                 writer.newLine(); // Ensure each item is written on a new line
         }
@@ -291,6 +289,7 @@ public class itemHomeController {
                 Boolean packStatus = Boolean.parseBoolean(data[2]);
                 int amount = Integer.parseInt(data[3]);
                 String owner = data[4];
+                int ID = Integer.parseInt(data[5]);
 
                 // Create a new Item object and add it to the list
                 Item item = new Item();
@@ -299,6 +298,7 @@ public class itemHomeController {
                 item.setStatus(packStatus);
                 item.setQuantity(amount);
                 item.setOwner(owner);
+                item.setBoxID(ID);
 
                 loadedList.add(item);
             }

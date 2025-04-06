@@ -18,16 +18,17 @@ public class Box {
     private StringProperty boxName;
     private StringProperty boxDate;
     private StringProperty packingReason;
-    private ArrayList<Item> items;
+    // private ArrayList<Item> items;
     private IntegerProperty boxID;
     private IntegerProperty totalBoxes;
-
+    private String location;
+ 
     public Box() {
         boxName = new SimpleStringProperty("Box");
         boxDate = new SimpleStringProperty("01/01/2000");
         packingReason = new SimpleStringProperty("Miscellaneous");
         boxOwner = new SimpleStringProperty("No one");
-        items = new ArrayList<>();
+        // items = new ArrayList<>();
         boxID = new SimpleIntegerProperty(1);
         totalBoxes = new SimpleIntegerProperty(1);
     } // End of constructor
@@ -64,9 +65,9 @@ public class Box {
         this.packingReason.set(reason);
     }
 
-    public void addItems(Item item) {
-        items.add(item);
-    }
+    // public void addItems(Item item) {
+    //     items.add(item);
+    // }
 
     public void setBoxID(int ID) {
         this.boxID.set(ID);
@@ -88,9 +89,9 @@ public class Box {
         return packingReason.get();
     }
 
-    public ArrayList<Item> getPackedItems() {
-        return items;
-    }
+    // public ArrayList<Item> getPackedItems() {
+    //     return items;
+    // }
 
     public int getBoxID() {
         return boxID.get();
@@ -106,5 +107,13 @@ public class Box {
 
     public String getBoxOwner(){
         return boxOwner.get();
+    }
+
+    public String getLocation(){
+        return location;
+    }
+
+    public void setLocation(String location){
+        this.location = location;
     }
 }
