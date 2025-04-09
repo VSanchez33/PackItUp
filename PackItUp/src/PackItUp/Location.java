@@ -16,6 +16,7 @@ public class Location {
 
    private IntegerProperty locationID;
    private StringProperty name;
+   // maybe box list
    private ArrayList<Box> boxList;
    private IntegerProperty totalBoxes;
    private String user;

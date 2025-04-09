@@ -14,6 +14,7 @@ import javafx.beans.property.StringProperty;
 public class User {
 
     private StringProperty userName;
+    // maybe user ID
     private IntegerProperty userID;
     private ArrayList<Location> locations;
 

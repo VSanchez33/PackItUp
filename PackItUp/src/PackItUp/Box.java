@@ -14,12 +14,15 @@ import javafx.beans.property.StringProperty;
 
 public class Box {
 
+    // remove owner
     private StringProperty boxOwner;
     private StringProperty boxName;
+    // remove date
     private StringProperty boxDate;
     private StringProperty packingReason;
-    // private ArrayList<Item> items;
+    // maybe boxID 
     private IntegerProperty boxID;
+    // remove total boxes
     private IntegerProperty totalBoxes;
     private String location;
  
