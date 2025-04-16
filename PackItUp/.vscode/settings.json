@@ -1,16 +1,8 @@
 {
-    "java.project.sourcePaths": [
-        "src"
-    ],
-    "java.project.outputPath": "bin/PackItUp",
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.fxml.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.media.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.base.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx-swt.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.swing.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.web.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.controls.jar",
-        "/Users/vincentsanchez/Desktop/CS371/cs371-sp2025-teamproject-pack-it-up/PackItUp/javafx-sdk-23.0.2/lib/javafx.graphics.jar"
+        "${workspaceFolder}/javafx-sdk-23.0.2/lib/**/*.jar",
+        "javafx-sdk-23.0.2/lib/**/*.jar"
     ]
 }
