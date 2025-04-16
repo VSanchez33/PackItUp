@@ -9,20 +9,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #cd9f61;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PackItUp.boxHomeController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #cd9f61;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PackItUp.userHomeController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
             <Button layoutX="549.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: #000000;" text="Back" textFill="WHITE" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b99159" height="62.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Text layoutX="222.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Boxes" textAlignment="CENTER">
+            <Text layoutX="230.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users" textAlignment="CENTER">
                <font>
                   <Font name="Futura Bold" size="48.0" />
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#createBox" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
-            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#deleteBox" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
+            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#createUser" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
+            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
             <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" wrappingWidth="105.52001953125">
                <font>
                   <Font name="Futura Bold" size="18.0" />
@@ -30,12 +30,10 @@
             </Text>
             <TableView fx:id="tableView" layoutX="67.0" layoutY="172.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
                <columns>
-                  <TableColumn fx:id="idColumn" prefWidth="92.0" text="ID" />
-                  <TableColumn fx:id="ownerColumn" prefWidth="104.0" text="Owner" />
-                  <TableColumn fx:id="boxNameColumn" prefWidth="264.0" text="Name" />
+                  <TableColumn fx:id="userColumn" prefWidth="460.0" text="User" />
                </columns>
             </TableView>
-            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#openBox" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Open" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#openUser" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Open" textFill="WHITE" AnchorPane.rightAnchor="536.0" />
          </children>
       </AnchorPane>
    </children>

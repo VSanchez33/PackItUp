@@ -7,7 +7,6 @@
 package PackItUp;
 
 import java.io.IOException;
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,9 +21,11 @@ public class boxController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     private ObservableList<Box> boxList; // This will store the boxes from boxHomeController
     private Box currentBox; // Store the box currently being edited
     private DataManager dataManager = DataManager.getInstance();
+    private static String location;
     
     @FXML
     private TextField idField;
@@ -36,9 +37,9 @@ public class boxController {
     private TextField nameField;
     
 
-    // Author: 
+    // Author: Tabatha Valverde
     // Method to initialize the controller
-    @FXML
+    @FXML 
     public void initialize() {
         if (currentBox != null) {
             // Load the box data into the fields if there's an box to edit
@@ -55,7 +56,7 @@ public class boxController {
         this.currentBox = box;
         // Populate fields with the selected box data for editing
         idField.setText("" + currentBox.getBoxID());
-        ownerField.setText(currentBox.getReason());
+        ownerField.setText(currentBox.getBoxOwner());
         nameField.setText(currentBox.getBoxName());
     } // end of setBox
 
@@ -69,18 +70,13 @@ public class boxController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     } // end of cancel    
 
 
     // Author: Tabatha Valverde and Vincent Sanchez
     // Saves the box created or edited
     @FXML
-    void saveBox(ActionEvent event) throws IOException {
+    private void saveBox(ActionEvent event) throws IOException {
         if (currentBox != null) {
             // If we're updating an existing box, apply changes
             currentBox.setBoxID(Integer.parseInt(idField.getText()));
@@ -93,8 +89,10 @@ public class boxController {
             newBox.setBoxID(Integer.parseInt(idField.getText()));
             newBox.setBoxOwner(ownerField.getText());
             newBox.setBoxName(nameField.getText());
-    
-            // // Add the new box to the list
+             // Sets the location for the location the item is stored in 
+            newBox.setLocation(location);
+
+            // Add the new box to the list
             boxList.add(newBox);
             dataManager.getBoxList().add(newBox);
         } // end of else
@@ -106,17 +104,22 @@ public class boxController {
         // Pass the updated box list to boxHomeController
         boxHomeController controller = loader.getController();
         controller.setBoxList(boxList); 
+        controller.setSelectedLocation(location);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     } // end of saveBox
-
+ 
 
     // Author: Tabatha Valverde
     // Setter to receive the list of boxess from homeController
     public void setBoxList(ObservableList<Box> boxList) {
         this.boxList = boxList;
     } // end of setBoxList
+
+    public void setLocation(String location){
+        this.location = location;
+    }
 } // end of boxController 

@@ -13,3 +13,5 @@
 *.rar
 
 .DS_Store
+lib/
+bin/

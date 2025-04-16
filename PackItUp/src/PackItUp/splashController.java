@@ -20,7 +20,7 @@ public class splashController {
     private Parent root;
 
     public void goHome(ActionEvent event) throws IOException{
-        root = FXMLLoader.load(getClass().getResource("box.fxml"));
+        root = FXMLLoader.load(getClass().getResource("user.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
