@@ -35,7 +35,7 @@ public class boxHomeController implements HomeController<Box>{
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedLocation;
+    public static String selectedLocation;
 
     @FXML
     private TableView<Box> tableView;
@@ -59,6 +59,7 @@ public class boxHomeController implements HomeController<Box>{
     
         // Initially populate the table with data from boxList
         displayBoxes(selectedLocation);
+
     
         // Load data
         loadData();
@@ -102,13 +103,22 @@ public class boxHomeController implements HomeController<Box>{
     } // end of opeBox
 
 
-    // Author: Tabatha Valverde 
+    // Author: Tabatha Valverde and Vincent Sanchez
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
         saveData();
-        root = FXMLLoader.load(getClass().getResource("location.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+        Parent root = loader.load();
+
+        locationHomeController controller = loader.getController();
+        String user = locationHomeController.selectedUser;
+        System.out.println("User Passed: " + user);
+        controller.setSelectedUser(user);
+        controller.displayLocations(user);
+    
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     } // end of goMain
@@ -152,7 +162,7 @@ public class boxHomeController implements HomeController<Box>{
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Remove the selected box from the box list
                 boxList.remove(selectedBox);
-                tableView.setItems(boxList);
+                displayBoxes(selectedLocation);
                 // Refresh the table
                 tableView.refresh();
                 saveData();
@@ -300,7 +310,8 @@ public class boxHomeController implements HomeController<Box>{
 
     // Author: Vincent Sanchez
     public void setSelectedLocation(String location) {
-        this.selectedLocation = location;
+        System.out.println("selectedLocation from setSelectedLocation: " + location);
+        boxHomeController.selectedLocation = location;
         loadData();
         displayBoxes(selectedLocation);
     }

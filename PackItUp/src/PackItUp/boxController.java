@@ -65,9 +65,17 @@ public class boxController implements Controller<Box>{
     // Cancels item creation or edit 
     @FXML
     public void cancel (ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("box.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        // Navigate back to home
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+        Parent root = loader.load();
+    
+        // Pass the updated box list to boxHomeController
+        boxHomeController controller = loader.getController();
+        controller.setList(boxList); 
+        controller.setSelectedLocation(boxHomeController.selectedLocation);
+    
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     } // end of cancel    
@@ -103,7 +111,7 @@ public class boxController implements Controller<Box>{
         // Pass the updated box list to boxHomeController
         boxHomeController controller = loader.getController();
         controller.setList(boxList); 
-        controller.setSelectedLocation(location);
+        controller.setSelectedLocation(boxHomeController.selectedLocation);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

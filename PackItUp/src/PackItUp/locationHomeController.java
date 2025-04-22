@@ -34,7 +34,7 @@ public class locationHomeController implements HomeController<Location>{
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedUser;
+    public static String selectedUser;
 
     @FXML
     private TableView<Location> tableView;
@@ -140,7 +140,7 @@ public class locationHomeController implements HomeController<Location>{
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Remove the selected location from the location list
                 locationList.remove(selectedLocation);
-                tableView.setItems(locationList);
+                displayLocations(selectedUser);
                 // Refresh the table
                 tableView.refresh();
                 saveData();
