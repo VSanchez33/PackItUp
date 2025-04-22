@@ -20,7 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 
     
-public class itemController {
+public class itemController implements Controller<Item>{
     
     private Stage stage;
     private Scene scene;
@@ -88,7 +88,7 @@ public class itemController {
 
     // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
-    private void saveItem(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentItem != null) {
             // Update the selected item with the new values
             currentItem.setName(nameField.getText());
@@ -118,7 +118,7 @@ public class itemController {
         Parent root = loader.load();
 
         itemHomeController controller = loader.getController();
-        controller.setItemList(itemList); // Pass the updated list back
+        controller.setList(itemList); // Pass the updated list back
         controller.setSelectedBoxID(boxID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -130,7 +130,7 @@ public class itemController {
 
     // Author: Tabatha Valverde
     // Setter to receive the list of items from homeController
-    public void setItemList(ObservableList<Item> itemList) {
+    public void setList(ObservableList<Item> list) {
         this.itemList = itemList;
     } // end of setItemList
 

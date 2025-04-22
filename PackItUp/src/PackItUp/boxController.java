@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class boxController {
+public class boxController implements Controller<Box>{
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -76,7 +76,7 @@ public class boxController {
     // Author: Tabatha Valverde and Vincent Sanchez
     // Saves the box created or edited
     @FXML
-    private void saveBox(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentBox != null) {
             // If we're updating an existing box, apply changes
             currentBox.setBoxID(Integer.parseInt(idField.getText()));
@@ -91,7 +91,6 @@ public class boxController {
             newBox.setBoxName(nameField.getText());
              // Sets the location for the location the item is stored in 
             newBox.setLocation(location);
-
             // Add the new box to the list
             boxList.add(newBox);
             dataManager.getBoxList().add(newBox);
@@ -103,7 +102,7 @@ public class boxController {
     
         // Pass the updated box list to boxHomeController
         boxHomeController controller = loader.getController();
-        controller.setBoxList(boxList); 
+        controller.setList(boxList); 
         controller.setSelectedLocation(location);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -115,7 +114,7 @@ public class boxController {
 
     // Author: Tabatha Valverde
     // Setter to receive the list of boxess from homeController
-    public void setBoxList(ObservableList<Box> boxList) {
+    public void setList(ObservableList<Box> boxList) {
         this.boxList = boxList;
     } // end of setBoxList
 

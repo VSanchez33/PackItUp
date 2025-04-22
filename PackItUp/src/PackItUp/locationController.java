@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class locationController {
+public class locationController implements Controller<Location>{
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -66,7 +66,7 @@ public class locationController {
 
     // Saves the location created or edited
     @FXML
-    void saveLocation(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentLocation != null) {
             // If we're updating an existing location, apply changes
             currentLocation.setLocationName(locationNameField.getText());
@@ -87,7 +87,7 @@ public class locationController {
     
         // Pass the updated location list to locationHomeController
         locationHomeController controller = loader.getController();
-        controller.setLocationList(locationList); 
+        controller.setList(locationList); 
         controller.setSelectedUser(user);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -98,7 +98,7 @@ public class locationController {
  
 
     // Setter to receive the list of locations from homeController
-    public void setLocationList(ObservableList<Location> locationList) {
+    public void setList(ObservableList<Location> locationList) {
         this.locationList = locationList;
     } // end of setLocationList
 

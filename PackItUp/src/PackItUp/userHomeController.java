@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,7 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class userHomeController { 
+public class userHomeController implements HomeController<User>{ 
 
     private ObservableList<User> userList = FXCollections.observableArrayList(); // List to store boxes
     private Stage stage;
@@ -44,7 +45,7 @@ public class userHomeController {
 
 
     @FXML
-    private void initialize() {
+    public void initialize(){
         loadData();
 
         // Set up each column to display the correct property
@@ -64,7 +65,11 @@ public class userHomeController {
                 User selectedUser = tableView.getSelectionModel().getSelectedItem();
                 if (selectedUser != null) {
                     // Call edit method to open the user creation screen for editing
-                    editUser(selectedUser);
+                    try {
+                        edit(selectedUser);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     saveData();
                 } // end of if
             } // end of if
@@ -106,7 +111,7 @@ public class userHomeController {
 
 
     // Button that opens the user creation screen
-    public void createUser(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
         saveData();
 
         System.out.println("Navigating to user creation screen...");
@@ -114,7 +119,7 @@ public class userHomeController {
         root = loader.load();
     
         userController controller = loader.getController();
-        controller.setUserList(userList);
+        controller.setList(userList);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -125,7 +130,7 @@ public class userHomeController {
 
     // Button that allows the user to delete the selected list box
     @FXML
-    void deleteUser(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
         // Get the selected box from the TableView
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
@@ -154,7 +159,7 @@ public class userHomeController {
     
 
     // Open the editing view when an box is double-clicked
-    private void editUser(User selectedUser) {
+    public void edit(User selected) throws IOException{
         try {
             // Navigate to box creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addUser.fxml"));
@@ -163,8 +168,8 @@ public class userHomeController {
             userController controller = loader.getController();
             
             // Pass the selected user to the userController for editing
-            controller.setUser(selectedUser);
-            controller.setUserList(userList); // Pass the user list to the controller
+            controller.setUser(selected);
+            controller.setList(userList); // Pass the user list to the controller
         
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -178,7 +183,7 @@ public class userHomeController {
     } // end of editUser
 
 
-    public void setUserList(ObservableList<User> userList) {
+    public void setList(ObservableList<User> userList) {
         this.userList = userList;
         tableView.setItems(userList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
@@ -201,7 +206,7 @@ public class userHomeController {
             
             // Set the current box to the selected box for editing
             controller.setUser(selectedUser);
-            controller.setUserList(userList); 
+            controller.setList(userList); 
     
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
