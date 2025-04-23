@@ -42,8 +42,6 @@ public class boxHomeController implements HomeController<Box>{
     @FXML
     private TableColumn<Box, String> boxNameColumn;
     @FXML
-    private TableColumn<Box, String> ownerColumn;
-    @FXML
     private TableColumn<Box, Integer> idColumn;
 
 
@@ -54,7 +52,6 @@ public class boxHomeController implements HomeController<Box>{
 
         // Set up each column to display the correct property
         idColumn.setCellValueFactory(new PropertyValueFactory<>("boxID"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("boxOwner"));
         boxNameColumn.setCellValueFactory(new PropertyValueFactory<>("boxName"));
     
         // Initially populate the table with data from boxList
@@ -249,7 +246,7 @@ public class boxHomeController implements HomeController<Box>{
     public void saveData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("boxes.csv"))) {
             // Write the header (optional)
-            writer.write("BoxID,BoxName,BoxDate,BoxOwner,Location");
+            writer.write("BoxID,BoxName,Location");
             writer.newLine();
             
             // Write each box in the list to the CSV file
@@ -257,8 +254,6 @@ public class boxHomeController implements HomeController<Box>{
                 StringBuilder sb = new StringBuilder();
                 sb.append(box.getBoxID()).append(",");
                 sb.append(box.getBoxName()).append(",");
-                sb.append(box.getBoxDate()).append(",");
-                sb.append(box.getBoxOwner()).append(",");
                 sb.append(box.getLocation());
                 writer.write(sb.toString());
                 writer.newLine(); // Ensure each box is written on a new line
@@ -281,19 +276,15 @@ public class boxHomeController implements HomeController<Box>{
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 
-                // Assuming the CSV has columns in the order: BoxID, BoxName, BoxDate, BoxOwner
+                // Assuming the CSV has columns in the order: BoxID, BoxName
                 int boxID = Integer.parseInt(data[0]);
                 String boxName = data[1];
-                String boxDate = data[2];
-                String boxOwner = data[3];
-                String location = data[4];
+                String location = data[2];
     
                 // Create a new Box object and add it to the list
                 Box box = new Box();
                 box.setBoxID(boxID);
                 box.setBoxName(boxName);
-                box.setBoxDate(boxDate);
-                box.setBoxOwner(boxOwner);
                 box.setLocation(location);
 
                 loadedList.add(box);

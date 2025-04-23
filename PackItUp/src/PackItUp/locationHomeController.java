@@ -271,7 +271,7 @@ public class locationHomeController implements HomeController<Location>{
     }
 
     public void setSelectedUser(String user) {
-        this.selectedUser = user;  // Or store the whole user object if needed
+        locationHomeController.selectedUser = user;  // Or store the whole user object if needed
         loadData();
         displayLocations(selectedUser);
     }

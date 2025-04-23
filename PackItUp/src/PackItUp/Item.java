@@ -6,10 +6,6 @@
 
 package PackItUp;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -18,19 +14,17 @@ public class Item {
     // Tabatha: updated the elemets to e properties to work with the table
     private StringProperty itemName;
     private StringProperty date;
-    private BooleanProperty packStatus;
-    private IntegerProperty amount;
+    private StringProperty packStatus;
+    private StringProperty amount;
     // remove owner
-    private StringProperty owner;
     private int boxID;
 
     // Everything else Bryson implemented 
     public Item() {
         itemName = new SimpleStringProperty("Item");
         date = new SimpleStringProperty("01/01/2000");
-        packStatus = new SimpleBooleanProperty(false);
-        amount = new SimpleIntegerProperty(1);
-        owner = new SimpleStringProperty("Unknown");
+        packStatus = new SimpleStringProperty("unpacked");
+        amount = new SimpleStringProperty("1");
     } // end of constructor
     
 
@@ -58,40 +52,28 @@ public class Item {
         return date;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return packStatus.get();
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         packStatus.set(status);
     }
 
-    public BooleanProperty packStatusProperty() {
+    public StringProperty packStatusProperty() {
         return packStatus;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return amount.get();
     }
 
-    public void setQuantity(int amount) {
+    public void setQuantity(String amount) {
         this.amount.set(amount);
     }
 
-    public IntegerProperty amountProperty() {
+    public StringProperty amountProperty() {
         return amount;
-    }
-
-    public String getOwner() {
-        return owner.get();
-    }
-
-    public void setOwner(String owner) {
-        this.owner.set(owner);
-    }
-
-    public StringProperty ownerProperty() {
-        return owner;
     }
 
     public int getBoxID() {

@@ -21,7 +21,7 @@
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="259.0" layoutY="338.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
+            <Button layoutX="259.0" layoutY="308.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
                <font>
                   <Font name="Futura Bold" size="21.0" />
                </font>
@@ -35,34 +35,24 @@
                <children>
                   <HBox prefHeight="29.0" prefWidth="567.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID:" wrappingWidth="153.32799911499023">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID:" wrappingWidth="133.32799911499023">
                            <font>
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
                         <!-- Add fx:id to bind the TextField to the controller -->
-                        <TextField fx:id="idField" prefHeight="26.0" prefWidth="440.0" />
+                        <TextField fx:id="idField" prefHeight="26.0" prefWidth="500.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="29.0" prefWidth="567.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" wrappingWidth="153.32799911499023">
-                           <font>
-                              <Font name="Futura Bold" size="18.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="ownerField" prefHeight="26.0" prefWidth="440.0" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="29.0" prefWidth="567.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="153.32799911499023">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="133.32799911499023">
                            <font>
                               <Font name="Futura Bold" size="18.0" />
                            </font>
                         </Text>
                         <!-- Add fx:id to bind the TextField to the controller -->
-                        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="399.0" />
+                        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="391.0" />
                      </children>
                   </HBox>
                </children>

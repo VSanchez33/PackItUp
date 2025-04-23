@@ -18,10 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class boxController implements Controller<Box>{
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     private ObservableList<Box> boxList; // This will store the boxes from boxHomeController
     private Box currentBox; // Store the box currently being edited
     private DataManager dataManager = DataManager.getInstance();
@@ -44,7 +40,6 @@ public class boxController implements Controller<Box>{
         if (currentBox != null) {
             // Load the box data into the fields if there's an box to edit
             idField.setText("" + currentBox.getBoxID());
-            ownerField.setText(currentBox.getBoxOwner()); 
             nameField.setText(currentBox.getBoxName()); 
         } // end of if
     } // end of initialize
@@ -56,7 +51,6 @@ public class boxController implements Controller<Box>{
         this.currentBox = box;
         // Populate fields with the selected box data for editing
         idField.setText("" + currentBox.getBoxID());
-        ownerField.setText(currentBox.getBoxOwner());
         nameField.setText(currentBox.getBoxName());
     } // end of setBox
 
@@ -88,14 +82,12 @@ public class boxController implements Controller<Box>{
         if (currentBox != null) {
             // If we're updating an existing box, apply changes
             currentBox.setBoxID(Integer.parseInt(idField.getText()));
-            currentBox.setBoxOwner(ownerField.getText());
             currentBox.setBoxName(nameField.getText());
         } 
         else {
             // If currentBox is null, create a new box
             Box newBox = new Box();
             newBox.setBoxID(Integer.parseInt(idField.getText()));
-            newBox.setBoxOwner(ownerField.getText());
             newBox.setBoxName(nameField.getText());
              // Sets the location for the location the item is stored in 
             newBox.setLocation(location);
@@ -127,6 +119,6 @@ public class boxController implements Controller<Box>{
     } // end of setBoxList
 
     public void setLocation(String location){
-        this.location = location;
+        boxController.location = location;
     }
 } // end of boxController 

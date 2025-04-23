@@ -47,8 +47,6 @@ public class itemHomeController implements HomeController<Item>{
     private TableColumn<Item, String> statusColumn;
     @FXML
     private TableColumn<Item, Integer> amountColumn;
-    @FXML
-    private TableColumn<Item, String> ownerColumn;
 
 
     // Author: Tabatha Valverde
@@ -62,7 +60,6 @@ public class itemHomeController implements HomeController<Item>{
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
 
         displayItems(selectedBoxID);
 
@@ -231,7 +228,7 @@ public class itemHomeController implements HomeController<Item>{
     // Author: Vincent Sanchez
     // Set the boxId to get the correct items
     public void setSelectedBoxID(int id){
-        this.selectedBoxID = id;
+        itemHomeController.selectedBoxID = id;
         loadData(); // Reload data when the selected box changes
         displayItems(selectedBoxID);
     }
@@ -258,7 +255,7 @@ public class itemHomeController implements HomeController<Item>{
     public void saveData() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("items.csv"))) {
         // Write the header (optional)
-        writer.write("ItemName,Date,PackStatus,Amount,Owner,BoxID");
+        writer.write("ItemName,Date,PackStatus,Amount,BoxID");
         writer.newLine();
         
         // Write each item in the list to the CSV file
@@ -268,7 +265,6 @@ public class itemHomeController implements HomeController<Item>{
                 sb.append(item.getDate()).append(",");
                 sb.append(item.getStatus()).append(",");
                 sb.append(item.getQuantity()).append(",");
-                sb.append(item.getOwner()).append(",");
                 sb.append(item.getBoxID());
                 writer.write(sb.toString());
                 writer.newLine(); // Ensure each item is written on a new line
@@ -295,10 +291,9 @@ public class itemHomeController implements HomeController<Item>{
                 // Assuming the CSV has columns in the order: ItemName, Date, PackStatus, Amount, Owner
                 String itemName = data[0];
                 String date = data[1];
-                Boolean packStatus = Boolean.parseBoolean(data[2]);
-                int amount = Integer.parseInt(data[3]);
-                String owner = data[4];
-                int ID = Integer.parseInt(data[5]);
+                String packStatus = data[2];
+                String amount = data[3];
+                int ID = Integer.parseInt(data[4]);
 
                 // Create a new Item object and add it to the list
                 Item item = new Item();
@@ -306,7 +301,6 @@ public class itemHomeController implements HomeController<Item>{
                 item.setDate(date);
                 item.setStatus(packStatus);
                 item.setQuantity(amount);
-                item.setOwner(owner);
                 item.setBoxID(ID);
 
                 loadedList.add(item);

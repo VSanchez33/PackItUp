@@ -18,9 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class locationController implements Controller<Location>{
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    
     private ObservableList<Location> locationList; // This will store the locations from locationHomeController
     private Location currentLocation; // Store the location currently being edited
     private DataManager dataManager = DataManager.getInstance();
@@ -106,6 +104,6 @@ public class locationController implements Controller<Location>{
     } // end of setLocationList
 
     public void setUser(String user){
-        this.user = user;
+        locationController.user = user;
     }
 } // end of locationController 

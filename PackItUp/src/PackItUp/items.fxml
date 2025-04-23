@@ -30,11 +30,10 @@
             </Text>
             <TableView fx:id="tableView" layoutX="70.0" layoutY="170.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
                <columns>
-                  <TableColumn fx:id="nameColumn" prefWidth="92.0" text="Name" />
-                  <TableColumn fx:id="dateColumn" prefWidth="92.0" text="Date" />
-                  <TableColumn fx:id="statusColumn" prefWidth="92.0" text="Status" />
-                  <TableColumn fx:id="amountColumn" prefWidth="92.0" text="Amount" />
-                  <TableColumn fx:id="ownerColumn" prefWidth="92.0" text="Owner" />
+                  <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name" />
+                  <TableColumn fx:id="dateColumn" prefWidth="110.0" text="Date" />
+                  <TableColumn fx:id="statusColumn" prefWidth="110.0" text="Status" />
+                  <TableColumn fx:id="amountColumn" prefWidth="90.0" text="Amount" />
                </columns>
             </TableView>
          </children>
