@@ -16,6 +16,10 @@ public class Location {
 
    private IntegerProperty locationID;
    private StringProperty name;
+<<<<<<< HEAD
+=======
+   // maybe box list
+>>>>>>> main
    private ArrayList<Box> boxList;
    private IntegerProperty totalBoxes;
    private String user;

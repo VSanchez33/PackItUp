@@ -20,6 +20,7 @@ public class Item {
     private StringProperty date;
     private BooleanProperty packStatus;
     private IntegerProperty amount;
+    // remove owner
     private StringProperty owner;
     private int boxID;
 
