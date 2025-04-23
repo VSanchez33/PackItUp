@@ -28,13 +28,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class locationHomeController { 
+public class locationHomeController implements HomeController<Location>{ 
 
     private ObservableList<Location> locationList = FXCollections.observableArrayList(); // List to store locations
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedUser;
+    public static String selectedUser;
 
     @FXML
     private TableView<Location> tableView;
@@ -43,7 +43,7 @@ public class locationHomeController {
 
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         loadData();
 
         // Set up each column to display the correct property
@@ -62,7 +62,7 @@ public class locationHomeController {
                 Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
                 if (selectedLocation != null) {
                     // Call edit method to open the location creation screen for editing
-                    editLocation(selectedLocation);
+                    edit(selectedLocation);
                     saveData();
                 } // end of if
             } // end of if
@@ -105,7 +105,7 @@ public class locationHomeController {
 
 
     // Button that opens the location creation screen
-    public void createLocation(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
         saveData();
 
         System.out.println("Navigating to location creation screen...");
@@ -113,7 +113,7 @@ public class locationHomeController {
         root = loader.load();
     
         locationController controller = loader.getController();
-        controller.setLocationList(locationList);
+        controller.setList(locationList);
         controller.setUser(selectedUser);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -125,7 +125,7 @@ public class locationHomeController {
 
     // Button that allows the user to delete the selected list location
     @FXML
-    void deleteLocation(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
         // Get the selected location from the TableView
         Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
 
@@ -140,7 +140,7 @@ public class locationHomeController {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Remove the selected location from the location list
                 locationList.remove(selectedLocation);
-                tableView.setItems(locationList);
+                displayLocations(selectedUser);
                 // Refresh the table
                 tableView.refresh();
                 saveData();
@@ -155,7 +155,7 @@ public class locationHomeController {
     
 
     // Open the editing view when an location is double-clicked
-    private void editLocation(Location selectedLocation) {
+    public void edit(Location selected) {
         try {
             // Navigate to location creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addLocation.fxml"));
@@ -164,8 +164,8 @@ public class locationHomeController {
             locationController controller = loader.getController();
             
             // Pass the selected location to the locationController for editing
-            controller.setLocation(selectedLocation);
-            controller.setLocationList(locationList); // Pass the location list to the controller
+            controller.setLocation(selected);
+            controller.setList(locationList); // Pass the location list to the controller
         
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -179,7 +179,7 @@ public class locationHomeController {
     } // end of editLocation
 
 
-    public void setLocationList(ObservableList<Location> locationList) {
+    public void setList(ObservableList<Location> locationList) {
         this.locationList = locationList;
         tableView.setItems(locationList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
@@ -202,7 +202,7 @@ public class locationHomeController {
             
             // Set the current location to the selected location for editing
             controller.setLocation(selectedLocation);
-            controller.setLocationList(locationList); 
+            controller.setList(locationList); 
     
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

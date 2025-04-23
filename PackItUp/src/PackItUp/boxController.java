@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class boxController {
+public class boxController implements Controller<Box>{
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -65,9 +65,17 @@ public class boxController {
     // Cancels item creation or edit 
     @FXML
     public void cancel (ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("box.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        // Navigate back to home
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+        Parent root = loader.load();
+    
+        // Pass the updated box list to boxHomeController
+        boxHomeController controller = loader.getController();
+        controller.setList(boxList); 
+        controller.setSelectedLocation(boxHomeController.selectedLocation);
+    
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     } // end of cancel    
@@ -76,7 +84,7 @@ public class boxController {
     // Author: Tabatha Valverde and Vincent Sanchez
     // Saves the box created or edited
     @FXML
-    private void saveBox(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentBox != null) {
             // If we're updating an existing box, apply changes
             currentBox.setBoxID(Integer.parseInt(idField.getText()));
@@ -91,7 +99,6 @@ public class boxController {
             newBox.setBoxName(nameField.getText());
              // Sets the location for the location the item is stored in 
             newBox.setLocation(location);
-
             // Add the new box to the list
             boxList.add(newBox);
             dataManager.getBoxList().add(newBox);
@@ -103,8 +110,8 @@ public class boxController {
     
         // Pass the updated box list to boxHomeController
         boxHomeController controller = loader.getController();
-        controller.setBoxList(boxList); 
-        controller.setSelectedLocation(location);
+        controller.setList(boxList); 
+        controller.setSelectedLocation(boxHomeController.selectedLocation);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -115,7 +122,7 @@ public class boxController {
 
     // Author: Tabatha Valverde
     // Setter to receive the list of boxess from homeController
-    public void setBoxList(ObservableList<Box> boxList) {
+    public void setList(ObservableList<Box> boxList) {
         this.boxList = boxList;
     } // end of setBoxList
 

@@ -1,8 +1,8 @@
 /*
- * Authors: 
- *      Tabatha Valverde
- *      Vincent Sanchez
- */
+* Authors: 
+*      Tabatha Valverde
+*      Vincent Sanchez
+*/
 
 package PackItUp;
 
@@ -29,13 +29,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class itemHomeController {
+public class itemHomeController implements HomeController<Item>{
 
     private ObservableList<Item> itemList = FXCollections.observableArrayList(); // List to store items
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static int selectedBoxID;
+    public static int selectedBoxID;
 
     @FXML
     private TableView<Item> tableView;
@@ -53,7 +53,7 @@ public class itemHomeController {
 
     // Author: Tabatha Valverde
     @FXML
-    private void initialize() throws IOException{
+    public void initialize(){
         //Load data
         loadData();
 
@@ -77,7 +77,7 @@ public class itemHomeController {
                 if (selectedItem != null) {
                     // Call edit method to open the Item creation screen for editing
                     try {
-                        editItem(selectedItem);
+                        edit(selectedItem);
                         saveData();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -92,11 +92,20 @@ public class itemHomeController {
     } // end of initialize
 
 
-    // Author: Tabatha Valverde
+    // Author: Tabatha Valverde and Vincent Sanchez
     // Button that opens Boxes Screen
+    // Uses the same logic as opening from the location screen to display the correct boxes 
     public void goBack(ActionEvent event) throws IOException {
         saveData();
-        root = FXMLLoader.load(getClass().getResource("box.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+        Parent root = loader.load();
+
+        boxHomeController controller = loader.getController();
+        String location = boxHomeController.selectedLocation;
+        controller.setSelectedLocation(location);
+        controller.displayBoxes(location);
+
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -106,14 +115,14 @@ public class itemHomeController {
 
     // Author: Tabatha Valverde
     // Button that opens the item creation screen
-    public void createItem(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
         saveData();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         root = loader.load();
         
         itemController controller = loader.getController();
-        controller.setItemList(itemList); // Pass item list to the creation controller
+        controller.setList(itemList); // Pass item list to the creation controller
 
         controller.setBoxID(selectedBoxID);
     
@@ -127,7 +136,7 @@ public class itemHomeController {
     // Author: Tabatha Valverde
     // Button that allows the user to delete the selected list item
     @FXML
-    void deleteItem(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
         // Get the selected item from the TableView
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -142,8 +151,8 @@ public class itemHomeController {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Remove the selected item from the item list
                 itemList.remove(selectedItem);
-                tableView.setItems(itemList); // Re-bind the updated list to the TableView
-                tableView.refresh(); // Ensure the table view is refreshed
+                displayItems(selectedBoxID);
+            //  tableView.refresh(); // Ensure the table view is refreshed
                 // Save the updated list to the CSV file
                 saveData();
             }
@@ -157,7 +166,7 @@ public class itemHomeController {
 
     // Author: Tabatha Valverde
     // Open the editing view when an item is double-clicked
-    private void editItem(Item selectedItem) throws IOException {
+    public void edit(Item selectedItem) throws IOException {
         // Navigate to item creation screen for editing
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
         Parent root = loader.load();
@@ -166,7 +175,7 @@ public class itemHomeController {
         
         // Pass the selected item to the itemController for editing
         controller.setItem(selectedItem);
-        controller.setItemList(itemList); // Pass the item list to the controller
+        controller.setList(itemList); // Pass the item list to the controller
     
         Stage stage = (Stage) tableView.getScene().getWindow();
         Scene scene = new Scene(root);
@@ -176,7 +185,7 @@ public class itemHomeController {
     
     
     // Author: Tabatha Valverde
-    public void setItemList(ObservableList<Item> itemList) {
+    public void setList(ObservableList<Item> itemList) {
         this.itemList = itemList;
         tableView.setItems(itemList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
@@ -201,7 +210,7 @@ public class itemHomeController {
             
             // Set the current item to the selected item for editing
             controller.setItem(selectedItem);
-            controller.setItemList(itemList); // Pass the item list for saving new items
+            controller.setList(itemList); // Pass the item list for saving new items
     
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

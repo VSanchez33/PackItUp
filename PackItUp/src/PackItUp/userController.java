@@ -18,7 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
  
-public class userController {
+public class userController implements Controller<User>{
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -61,7 +61,7 @@ public class userController {
 
     // Saves the user created or edited
     @FXML
-    void saveUser(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentUser != null) {
             // If we're updating an existing user, apply changes
             currentUser.setName(userNameField.getText());
@@ -82,7 +82,7 @@ public class userController {
     
         // Pass the updated user list to userHomeController
         userHomeController controller = loader.getController();
-        controller.setUserList(userList); 
+        controller.setList(userList); 
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -92,7 +92,7 @@ public class userController {
 
 
     // Setter to receive the list of users from homeController
-    public void setUserList(ObservableList<User> userList) {
+    public void setList(ObservableList<User> userList) {
         this.userList = userList;
     } // end of setUserList
 } // end of userController 

@@ -29,13 +29,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class boxHomeController { 
+public class boxHomeController implements HomeController<Box>{ 
 
     private ObservableList<Box> boxList = FXCollections.observableArrayList(); // List to store boxes
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedLocation;
+    public static String selectedLocation;
 
     @FXML
     private TableView<Box> tableView;
@@ -49,7 +49,7 @@ public class boxHomeController {
 
     // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
-    private void initialize() {
+    public void initialize() {
         loadData();
 
         // Set up each column to display the correct property
@@ -59,6 +59,7 @@ public class boxHomeController {
     
         // Initially populate the table with data from boxList
         displayBoxes(selectedLocation);
+
     
         // Load data
         loadData();
@@ -70,7 +71,7 @@ public class boxHomeController {
                 Box selectedBox = tableView.getSelectionModel().getSelectedItem();
                 if (selectedBox != null) {
                     // Call edit method to open the Item creation screen for editing
-                    editBox(selectedBox);
+                    edit(selectedBox);
                     saveData();
                 } // end of if
             } // end of if
@@ -102,13 +103,22 @@ public class boxHomeController {
     } // end of opeBox
 
 
-    // Author: Tabatha Valverde 
+    // Author: Tabatha Valverde and Vincent Sanchez
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
         saveData();
-        root = FXMLLoader.load(getClass().getResource("location.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+        Parent root = loader.load();
+
+        locationHomeController controller = loader.getController();
+        String user = locationHomeController.selectedUser;
+        System.out.println("User Passed: " + user);
+        controller.setSelectedUser(user);
+        controller.displayLocations(user);
+    
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     } // end of goMain
@@ -116,7 +126,7 @@ public class boxHomeController {
 
     // Author: Tabatha Valverde 
     // Button that opens the box creation screen
-    public void createBox(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
         saveData();
 
         System.out.println("Navigating to box creation screen...");
@@ -124,7 +134,7 @@ public class boxHomeController {
         root = loader.load();
     
         boxController controller = loader.getController();
-        controller.setBoxList(boxList);
+        controller.setList(boxList);
         controller.setLocation(selectedLocation);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -137,7 +147,7 @@ public class boxHomeController {
     // Author: Tabatha Valverde
     // Button that allows the user to delete the selected list box
     @FXML
-    void deleteBox(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
         // Get the selected box from the TableView
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
@@ -152,7 +162,7 @@ public class boxHomeController {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Remove the selected box from the box list
                 boxList.remove(selectedBox);
-                tableView.setItems(boxList);
+                displayBoxes(selectedLocation);
                 // Refresh the table
                 tableView.refresh();
                 saveData();
@@ -168,7 +178,7 @@ public class boxHomeController {
 
     // Author: Tabatha Valverde
     // Open the editing view when an box is double-clicked
-    private void editBox(Box selectedBox) {
+    public void edit(Box selected) {
         try {
             // Navigate to box creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("boxCreation.fxml"));
@@ -177,8 +187,8 @@ public class boxHomeController {
             boxController controller = loader.getController();
             
             // Pass the selected box to the boxController for editing
-            controller.setBox(selectedBox);
-            controller.setBoxList(boxList); // Pass the box list to the controller
+            controller.setBox(selected);
+            controller.setList(boxList); // Pass the box list to the controller
         
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -193,7 +203,7 @@ public class boxHomeController {
 
 
     // Author: Tabatha Valverde
-    public void setBoxList(ObservableList<Box> boxList) {
+    public void setList(ObservableList<Box> boxList) {
         this.boxList = boxList;
         tableView.setItems(boxList);  // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
@@ -217,7 +227,7 @@ public class boxHomeController {
             
             // Set the current box to the selected box for editing
             controller.setBox(selectedBox);
-            controller.setBoxList(boxList); 
+            controller.setList(boxList); 
     
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -231,7 +241,7 @@ public class boxHomeController {
             System.out.println("No box selected for editing.");
         } // end of else
         saveData();
-    } // end of handleEditBox
+    } // end of EditBox
 
 
     // Author: Tabatha Valverde
@@ -300,7 +310,8 @@ public class boxHomeController {
 
     // Author: Vincent Sanchez
     public void setSelectedLocation(String location) {
-        this.selectedLocation = location;
+        System.out.println("selectedLocation from setSelectedLocation: " + location);
+        boxHomeController.selectedLocation = location;
         loadData();
         displayBoxes(selectedLocation);
     }

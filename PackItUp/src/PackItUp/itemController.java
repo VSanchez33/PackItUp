@@ -1,8 +1,8 @@
 /*
- * Authors: 
- *      Tabatha Valverde
- *      Vincent Sanchez
- */
+* Authors: 
+*      Tabatha Valverde
+*      Vincent Sanchez
+*/
 
 package PackItUp;
 
@@ -20,7 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 
     
-public class itemController {
+public class itemController implements Controller<Item>{
     
     private Stage stage;
     private Scene scene;
@@ -58,6 +58,7 @@ public class itemController {
             statusField.setText(Boolean.toString(currentItem.getStatus()));
             amountField.setText(Integer.toString(currentItem.getQuantity()));
             ownerField.setText(currentItem.getOwner());
+            boxID = currentItem.getBoxID();
         } // end of if
     } // end of initialize
 
@@ -75,20 +76,26 @@ public class itemController {
     } // end of setItem
 
 
-    // Author: Tabatha Valverde
+    // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     public void cancel (ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("items.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
+    Parent root = loader.load();
+
+    itemHomeController controller = loader.getController();
+    controller.setList(itemList); // Pass the updated list back
+    controller.setSelectedBoxID(itemHomeController.selectedBoxID);
+
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    Scene scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
     } // end of cancel
 
 
     // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
-    private void saveItem(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentItem != null) {
             // Update the selected item with the new values
             currentItem.setName(nameField.getText());
@@ -106,7 +113,6 @@ public class itemController {
             newItem.setOwner(ownerField.getText());
             // Sets the ID for the box the item is stored in 
             newItem.setBoxID(boxID);
-            System.out.println("BOX ID IS THIS: " + boxID);
             // Add the new item to the list
             itemList.add(newItem);
             // Add the new item to the list universally
@@ -118,8 +124,8 @@ public class itemController {
         Parent root = loader.load();
 
         itemHomeController controller = loader.getController();
-        controller.setItemList(itemList); // Pass the updated list back
-        controller.setSelectedBoxID(boxID);
+        controller.setList(itemList); // Pass the updated list back
+        controller.setSelectedBoxID(itemHomeController.selectedBoxID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -130,7 +136,7 @@ public class itemController {
 
     // Author: Tabatha Valverde
     // Setter to receive the list of items from homeController
-    public void setItemList(ObservableList<Item> itemList) {
+    public void setList(ObservableList<Item> itemList) {
         this.itemList = itemList;
     } // end of setItemList
 

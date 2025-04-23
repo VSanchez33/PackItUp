@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class locationController {
+public class locationController implements Controller<Location>{
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -51,13 +51,16 @@ public class locationController {
     // Cancels location creation or edit 
     @FXML
     public void cancel (ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("location.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Navigate back to home
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+        Parent root = loader.load();
+    
+        // Pass the updated location list to locationHomeController
+        locationHomeController controller = loader.getController();
+        controller.setList(locationList); 
+        controller.setSelectedUser(locationHomeController.selectedUser);
+    
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -66,7 +69,7 @@ public class locationController {
 
     // Saves the location created or edited
     @FXML
-    void saveLocation(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws IOException {
         if (currentLocation != null) {
             // If we're updating an existing location, apply changes
             currentLocation.setLocationName(locationNameField.getText());
@@ -87,8 +90,8 @@ public class locationController {
     
         // Pass the updated location list to locationHomeController
         locationHomeController controller = loader.getController();
-        controller.setLocationList(locationList); 
-        controller.setSelectedUser(user);
+        controller.setList(locationList); 
+        controller.setSelectedUser(locationHomeController.selectedUser);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -98,7 +101,7 @@ public class locationController {
  
 
     // Setter to receive the list of locations from homeController
-    public void setLocationList(ObservableList<Location> locationList) {
+    public void setList(ObservableList<Location> locationList) {
         this.locationList = locationList;
     } // end of setLocationList
 
