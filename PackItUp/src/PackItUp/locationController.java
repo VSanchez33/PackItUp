@@ -18,13 +18,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class locationController {
+    
     private Stage stage;
     private Scene scene;
     private Parent root;
     private ObservableList<Location> locationList; // This will store the locations from locationHomeController
     private Location currentLocation; // Store the location currently being edited
     private DataManager dataManager = DataManager.getInstance();
-    private static String user;
+    private static int userID;
     
     @FXML
     private TextField locationNameField;
@@ -67,6 +68,7 @@ public class locationController {
     // Saves the location created or edited
     @FXML
     void saveLocation(ActionEvent event) throws IOException {
+
         if (currentLocation != null) {
             // If we're updating an existing location, apply changes
             currentLocation.setLocationName(locationNameField.getText());
@@ -75,7 +77,7 @@ public class locationController {
             // If currentBox is null, create a new location
             Location newLocation = new Location();
             newLocation.setLocationName(locationNameField.getText());
-            newLocation.setUser(user);
+            newLocation.setUserID(userID);
             // Add the new location to the list
             locationList.add(newLocation);
             dataManager.getLocationList().add(newLocation);
@@ -88,7 +90,7 @@ public class locationController {
         // Pass the updated location list to locationHomeController
         locationHomeController controller = loader.getController();
         controller.setLocationList(locationList); 
-        controller.setSelectedUser(user);
+        controller.setSelectedUser(userID);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -102,7 +104,8 @@ public class locationController {
         this.locationList = locationList;
     } // end of setLocationList
 
-    public void setUser(String user){
-        this.user = user;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
+
 } // end of locationController 

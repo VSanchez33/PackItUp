@@ -47,8 +47,8 @@ public class itemHomeController {
     private TableColumn<Item, String> statusColumn;
     @FXML
     private TableColumn<Item, Integer> amountColumn;
-    @FXML
-    private TableColumn<Item, String> ownerColumn;
+    // @FXML
+    // private TableColumn<Item, String> ownerColumn;
 
 
     // Author: Tabatha Valverde
@@ -62,7 +62,7 @@ public class itemHomeController {
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
+        //ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
 
         displayItems(selectedBoxID);
 
@@ -70,21 +70,22 @@ public class itemHomeController {
         loadData();
 
         // Handle row click to select item
-        tableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Double click to edit
+        // tableView.setOnMouseClicked(event -> {
+            
+        //     if (event.getClickCount() == 2) { // Double click to edit
                 
-                Item selectedItem = tableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    // Call edit method to open the Item creation screen for editing
-                    try {
-                        editItem(selectedItem);
-                        saveData();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } // end of if
-            } // end of if
-        }); // end of tableView
+        //         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+        //         if (selectedItem != null) {
+        //             // Call edit method to open the Item creation screen for editing
+        //             try {
+        //                 editItem(selectedItem);
+        //                 saveData();
+        //             } catch (IOException e) {
+        //                 e.printStackTrace();
+        //             }
+        //         } // end of if
+        //     } // end of if
+        // }); // end of tableView
 
         saveData();
         //debug code
@@ -157,21 +158,43 @@ public class itemHomeController {
 
     // Author: Tabatha Valverde
     // Open the editing view when an item is double-clicked
-    private void editItem(Item selectedItem) throws IOException {
-        // Navigate to item creation screen for editing
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
-        Parent root = loader.load();
+    public void editItem(ActionEvent event) throws IOException {
         
-        itemController controller = loader.getController();
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedItem != null) {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
+            Parent root = loader.load();
+
+            itemController controller = loader.getController();
+            
+            // Pass the selected box to the boxController for editing
+            controller.setItem(selectedItem);
+            controller.setItemList(itemList); // Pass the box list to the controller
+            controller.setBoxID(selectedBoxID);
         
-        // Pass the selected item to the itemController for editing
-        controller.setItem(selectedItem);
-        controller.setItemList(itemList); // Pass the item list to the controller
+            Stage stage = (Stage) tableView.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } // end of if
+
+        // // Navigate to item creation screen for editing
+        // FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
+        // Parent root = loader.load();
+        
+        // itemController controller = loader.getController();
+        
+        // // Pass the selected item to the itemController for editing
+        // controller.setItem(selectedItem);
+        // controller.setItemList(itemList); // Pass the item list to the controller
     
-        Stage stage = (Stage) tableView.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        // Stage stage = (Stage) tableView.getScene().getWindow();
+        // Scene scene = new Scene(root);
+        // stage.setScene(scene);
+        // stage.show();
     } // end of editItem
     
     

@@ -35,14 +35,14 @@ public class boxHomeController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedLocation;
+    private static int selectedLocationID;
 
     @FXML
     private TableView<Box> tableView;
     @FXML
     private TableColumn<Box, String> boxNameColumn;
-    @FXML
-    private TableColumn<Box, String> ownerColumn;
+    // @FXML
+    // private TableColumn<Box, String> ownerColumn;
     @FXML
     private TableColumn<Box, Integer> idColumn;
 
@@ -54,11 +54,11 @@ public class boxHomeController {
 
         // Set up each column to display the correct property
         idColumn.setCellValueFactory(new PropertyValueFactory<>("boxID"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("boxOwner"));
+        //ownerColumn.setCellValueFactory(new PropertyValueFactory<>("boxOwner"));
         boxNameColumn.setCellValueFactory(new PropertyValueFactory<>("boxName"));
     
         // Initially populate the table with data from boxList
-        displayBoxes(selectedLocation);
+        displayBoxes(selectedLocationID);
     
         // Load data
         loadData();
@@ -70,7 +70,7 @@ public class boxHomeController {
                 Box selectedBox = tableView.getSelectionModel().getSelectedItem();
                 if (selectedBox != null) {
                     // Call edit method to open the Item creation screen for editing
-                    editBox(selectedBox);
+                    openBox(selectedBox);
                     saveData();
                 } // end of if
             } // end of if
@@ -78,26 +78,31 @@ public class boxHomeController {
 
         saveData();
         //debug code
-        System.out.println("boxHomeController initialized with selectedLocation: " + selectedLocation);
+        System.out.println("boxHomeController initialized with selectedLocation: " + selectedLocationID);
     } // end of initialize
  
     // Author: Tabatha Valverde and Vincent Sanchez
-    public void openBox(ActionEvent event) throws IOException {
+    public void editBox(ActionEvent event) throws IOException {
+        
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedBox != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("boxCreation.fxml"));
             Parent root = loader.load();
 
-            itemHomeController controller = loader.getController();
-            int boxID = selectedBox.getBoxID(); 
-            controller.setSelectedBoxID(boxID);
-            controller.displayItems(boxID);
+            boxController controller = loader.getController();
+            
+            // Pass the selected box to the boxController for editing
+            controller.setBox(selectedBox);
+            controller.setBoxList(boxList); // Pass the box list to the controller
+            controller.setLocationID(selectedLocationID);
         
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+
         } // end of if
     } // end of opeBox
 
@@ -125,7 +130,7 @@ public class boxHomeController {
     
         boxController controller = loader.getController();
         controller.setBoxList(boxList);
-        controller.setLocation(selectedLocation);
+        controller.setLocationID(selectedLocationID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -168,22 +173,22 @@ public class boxHomeController {
 
     // Author: Tabatha Valverde
     // Open the editing view when an box is double-clicked
-    private void editBox(Box selectedBox) {
+    private void openBox(Box selectedBox) {
         try {
-            // Navigate to box creation screen for editing
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("boxCreation.fxml"));
-            Parent root = loader.load();
-
-            boxController controller = loader.getController();
             
-            // Pass the selected box to the boxController for editing
-            controller.setBox(selectedBox);
-            controller.setBoxList(boxList); // Pass the box list to the controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
+            root = loader.load();
+
+            itemHomeController controller = loader.getController();
+            int boxID = selectedBox.getBoxID(); 
+            controller.setSelectedBoxID(boxID);
+            controller.displayItems(boxID);
         
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            
         } // end of try
         
         catch (IOException e) {
@@ -239,7 +244,7 @@ public class boxHomeController {
     public void saveData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("boxes.csv"))) {
             // Write the header (optional)
-            writer.write("BoxID,BoxName,BoxDate,BoxOwner,Location");
+            writer.write("BoxID,BoxName,BoxDate,LocationID");
             writer.newLine();
             
             // Write each box in the list to the CSV file
@@ -249,7 +254,7 @@ public class boxHomeController {
                 sb.append(box.getBoxName()).append(",");
                 sb.append(box.getBoxDate()).append(",");
                 sb.append(box.getBoxOwner()).append(",");
-                sb.append(box.getLocation());
+                sb.append(box.getLocationID());
                 writer.write(sb.toString());
                 writer.newLine(); // Ensure each box is written on a new line
             }
@@ -260,6 +265,7 @@ public class boxHomeController {
 
     // Loads the boxes from the csv
     public void loadData() {
+        
         try (BufferedReader reader = new BufferedReader(new FileReader("boxes.csv"))) {
             String line;
             ArrayList<Box> loadedList = new ArrayList<>();
@@ -276,7 +282,7 @@ public class boxHomeController {
                 String boxName = data[1];
                 String boxDate = data[2];
                 String boxOwner = data[3];
-                String location = data[4];
+                int location = Integer.parseInt(data[4]);
     
                 // Create a new Box object and add it to the list
                 Box box = new Box();
@@ -284,7 +290,7 @@ public class boxHomeController {
                 box.setBoxName(boxName);
                 box.setBoxDate(boxDate);
                 box.setBoxOwner(boxOwner);
-                box.setLocation(location);
+                box.setLocationID(location);
 
                 loadedList.add(box);
             }
@@ -299,20 +305,20 @@ public class boxHomeController {
     }
 
     // Author: Vincent Sanchez
-    public void setSelectedLocation(String location) {
-        this.selectedLocation = location;
+    public void setSelectedLocationID(int location) {
+        this.selectedLocationID = location;
         loadData();
-        displayBoxes(selectedLocation);
+        displayBoxes(selectedLocationID);
     }
 
     // Author: Vincent Sanchez
-    public String getSelectedLocation(){
-        return selectedLocation;
+    public int getSelectedLocationID(){
+        return selectedLocationID;
     }
 
     // Author: Vincent Sanchez
-    public void displayBoxes(String location) {
-        ObservableList<Box> filteredList = boxList.filtered(box -> box.getLocation().equals(location));
+    public void displayBoxes(int locationID) {
+        ObservableList<Box> filteredList = boxList.filtered(box -> box.getLocationID() == locationID);
         tableView.setItems(filteredList);
         tableView.refresh();
         saveData();

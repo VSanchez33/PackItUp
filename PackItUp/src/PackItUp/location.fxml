@@ -33,7 +33,7 @@
                   <TableColumn fx:id="locationColumn" prefWidth="460.0" text="Location" />
                </columns>
             </TableView>
-            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#openLocation" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Open" textFill="WHITE" AnchorPane.rightAnchor="536.0" />
+            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#editLocation" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Edit" textFill="WHITE" AnchorPane.rightAnchor="536.0" />
          </children>
       </AnchorPane>
    </children>

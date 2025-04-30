@@ -43,8 +43,8 @@ public class itemController {
     @FXML
     private TextField amountField;
 
-    @FXML
-    private TextField ownerField;
+    // @FXML
+    // private TextField ownerField;
 
 
     // Author: Tabatha Valverde
@@ -57,7 +57,7 @@ public class itemController {
             datePicker.setValue(java.time.LocalDate.parse(currentItem.getDate())); // Assuming date format is ISO (yyyy-MM-dd)
             statusField.setText(Boolean.toString(currentItem.getStatus()));
             amountField.setText(Integer.toString(currentItem.getQuantity()));
-            ownerField.setText(currentItem.getOwner());
+            //ownerField.setText(currentItem.getOwner());
         } // end of if
     } // end of initialize
 
@@ -71,7 +71,7 @@ public class itemController {
         datePicker.setValue(java.time.LocalDate.parse(currentItem.getDate()));  // Assuming the date is in ISO format
         statusField.setText(Boolean.toString(currentItem.getStatus()));
         amountField.setText(Integer.toString(currentItem.getQuantity()));
-        ownerField.setText(currentItem.getOwner());
+        //ownerField.setText(currentItem.getOwner());
     } // end of setItem
 
 
@@ -95,7 +95,7 @@ public class itemController {
             currentItem.setDate(datePicker.getValue().toString());
             currentItem.setStatus(Boolean.parseBoolean(statusField.getText()));
             currentItem.setQuantity(Integer.parseInt(amountField.getText()));
-            currentItem.setOwner(ownerField.getText());
+            //currentItem.setOwner(ownerField.getText());
         } // end of if
         else{
             Item newItem = new Item();
@@ -103,7 +103,7 @@ public class itemController {
             newItem.setDate(datePicker.getValue().toString());
             newItem.setStatus(Boolean.parseBoolean(statusField.getText()));
             newItem.setQuantity(Integer.parseInt(amountField.getText()));
-            newItem.setOwner(ownerField.getText());
+            //newItem.setOwner(ownerField.getText());
             // Sets the ID for the box the item is stored in 
             newItem.setBoxID(boxID);
             System.out.println("BOX ID IS THIS: " + boxID);

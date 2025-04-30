@@ -1,5 +1,3 @@
-Location,User
-<<<<<<< HEAD
-Kitchen,Tabatha
-=======
->>>>>>> main
+ID,Name,UserID
+1,Loc12,1
+2,Loc22,1

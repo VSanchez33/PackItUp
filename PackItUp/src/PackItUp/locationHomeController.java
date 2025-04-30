@@ -34,7 +34,7 @@ public class locationHomeController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private static String selectedUser;
+    private static int selectedUserID;
 
     @FXML
     private TableView<Location> tableView;
@@ -44,13 +44,14 @@ public class locationHomeController {
 
     @FXML
     private void initialize() {
+
         loadData();
 
         // Set up each column to display the correct property
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
     
         // Initially populate the table with data from locationList
-        displayLocations(selectedUser);
+        displayLocations(selectedUserID);
     
         // Load data
         loadData();
@@ -62,7 +63,7 @@ public class locationHomeController {
                 Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
                 if (selectedLocation != null) {
                     // Call edit method to open the location creation screen for editing
-                    editLocation(selectedLocation);
+                    openLocation(selectedLocation);
                     saveData();
                 } // end of if
             } // end of if
@@ -70,27 +71,37 @@ public class locationHomeController {
 
         saveData();
         // debug code
-        System.out.println("locationHomeController initialized with selectedUser: " + selectedUser);
+        System.out.println("locationHomeController initialized with selectedUser: " + selectedUserID);
     } // end of initialize
 
-    public void openLocation(ActionEvent event) throws IOException {
-        Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
 
-        if (selectedLocation != null) {
+    // Open the box when an box is double-clicked
+    private void openLocation(Location selectedLocation) {
+        try {
+            // Navigate to box creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
             Parent root = loader.load();
-
+            
+            // Get the controller of the box creation screen
             boxHomeController controller = loader.getController();
-            String location = selectedLocation.getName(); 
-            controller.setSelectedLocation(location);
-            controller.displayBoxes(location);
-        
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            int locationID = selectedLocation.getLocationID(); 
+            System.out.println("Location Passed ID: " + locationID);
+            // Pass the location's ID (not name) to the boxHomeController
+            controller.setSelectedLocationID(locationID);
+            controller.displayBoxes(locationID); // Filter boxes by locationID
+    
+            // Set up the stage and scene for the box creation screen
+            Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of if
-    } // end of openLocation
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 
 
     // Button that opens Home Screen
@@ -114,7 +125,7 @@ public class locationHomeController {
     
         locationController controller = loader.getController();
         controller.setLocationList(locationList);
-        controller.setUser(selectedUser);
+        controller.setUserID(selectedUserID);
     
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -152,12 +163,14 @@ public class locationHomeController {
         } // end of else
         saveData();
     } // end of deleteLocation
-    
 
-    // Open the editing view when an location is double-clicked
-    private void editLocation(Location selectedLocation) {
-        try {
-            // Navigate to location creation screen for editing
+
+    // Edit user by selecting the desired user and clicking the Edit button
+    public void editLocation(ActionEvent event) throws IOException {
+        
+        Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedLocation != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addLocation.fxml"));
             Parent root = loader.load();
 
@@ -166,17 +179,19 @@ public class locationHomeController {
             // Pass the selected location to the locationController for editing
             controller.setLocation(selectedLocation);
             controller.setLocationList(locationList); // Pass the location list to the controller
+            controller.setUserID(selectedUserID);
+
+            // Get user ID to load correct location
         
-            Stage stage = (Stage) tableView.getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of try
-        
-        catch (IOException e) {
-            e.printStackTrace();
-        } // end of catch
-    } // end of editLocation
+
+        } // end of if
+
+    } // end of openUser
+
 
 
     public void setLocationList(ObservableList<Location> locationList) {
@@ -220,71 +235,67 @@ public class locationHomeController {
 
     // Saves the locations to the csv file
     public void saveData() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("locations.csv"))) {
-            // Write the header (optional)
-            writer.write("Location,User");
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("locations.csv"))) {
+        writer.write("ID,Name,UserID");
+        writer.newLine();
+
+        for (Location location : locationList) {
+            writer.write(location.getLocationID() + "," +
+                         location.getName() + "," +
+                         location.getUserID());
             writer.newLine();
-            
-            // Write each location in the list to the CSV file
-            for (Location location : locationList) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(location.getName()).append(",");
-                sb.append(location.getSelectedUser());
-                writer.write(sb.toString());
-                writer.newLine(); // Ensure each location is written on a new line
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }  // end of saveData
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
     // Loads the locations from the csv
     public void loadData() {
+        
+        //Location.resetIDCounter();
+    
         try (BufferedReader reader = new BufferedReader(new FileReader("locations.csv"))) {
             String line;
             ArrayList<Location> loadedList = new ArrayList<>();
-            
-            // Skip header line
-            reader.readLine();
-            
-            // Read each line and create a Box object
+    
+            reader.readLine(); // Skip header
+    
             while ((line = reader.readLine()) != null) {
-                String[] data =line.split(",");
-
-                String location = data[0];
-                String user = data[1];
-                // Create a new Location object and add it to the list
-                Location newLocation = new Location();
-                newLocation.setLocationName(location);
-                newLocation.setUser(user);
-
-                loadedList.add(newLocation);
+                String[] parts = line.split(",");
+                if (parts.length == 3) {
+                    int id = Integer.parseInt(parts[0].trim());
+                    String name = parts[1].trim();
+                    int userID = Integer.parseInt(parts[2].trim());
+    
+                    Location newLocation = new Location(id, name, userID);
+                    loadedList.add(newLocation);
+                }
             }
-            
-            // Update the locationList and refresh the table
+    
             locationList.setAll(loadedList);
             tableView.setItems(locationList);
-            
+            tableView.refresh();
+    
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setSelectedUser(String user) {
-        this.selectedUser = user;  // Or store the whole user object if needed
+    public void setSelectedUser(int userID) {
+        selectedUserID = userID;
         loadData();
-        displayLocations(selectedUser);
+        displayLocations(userID);
     }
 
-    public String getSelectedUser(){
-        return selectedUser;
+    public int getSelectedUser(){
+        return selectedUserID;
     }
 
-    public void displayLocations(String user){
-        ObservableList<Location> filteredList = locationList.filtered(location -> location.getSelectedUser().equals(user));
+    public void displayLocations(int userID){
+        ObservableList<Location> filteredList = locationList.filtered(location -> location.getUserID() == userID);
         tableView.setItems(filteredList);
         tableView.refresh();
-        saveData();
     }
 
 } // end of locationHomeController

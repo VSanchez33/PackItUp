@@ -64,7 +64,7 @@ public class userHomeController {
                 User selectedUser = tableView.getSelectionModel().getSelectedItem();
                 if (selectedUser != null) {
                     // Call edit method to open the user creation screen for editing
-                    editUser(selectedUser);
+                    openUser(selectedUser);
                     saveData();
                 } // end of if
             } // end of if
@@ -73,29 +73,18 @@ public class userHomeController {
         saveData();
     } // end of initialize
 
-    public void openUser(ActionEvent event) throws IOException {
-        User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
-        if (selectedUser != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
-            Parent root = loader.load();
-
-            locationHomeController controller = loader.getController();
-            String user = selectedUser.getName(); 
-            System.out.println("User Passed: " + user);
-            controller.setSelectedUser(user);
-            controller.displayLocations(user);
-        
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } // end of if
-    } // end of openUser
+    public void setUserList(ObservableList<User> userList) {
+        this.userList = userList;
+        tableView.setItems(userList);  // Update the table with the new list
+        tableView.refresh(); // Ensure the table view is refreshed to reflect changes
+    
+        saveData();
+    } // end of setUserList
 
 
     // Button that opens Home Screen
-    public void goBack(ActionEvent event) throws IOException {
+    public void goBack (ActionEvent event) throws IOException {
         saveData();
         root = FXMLLoader.load(getClass().getResource("splash.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -121,6 +110,7 @@ public class userHomeController {
         stage.setScene(scene);
         stage.show();
     } // end of createUser
+
 
 
     // Button that allows the user to delete the selected list box
@@ -153,38 +143,59 @@ public class userHomeController {
     } // end of deleteUser
     
 
-    // Open the editing view when an box is double-clicked
-    private void editUser(User selectedUser) {
-        try {
-            // Navigate to box creation screen for editing
+
+
+
+     // Edit user by selecting the desired user and clicking the Edit button
+     public void editUser(ActionEvent event) throws IOException {
+        User selectedUser = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedUser != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addUser.fxml"));
             Parent root = loader.load();
-            
+
             userController controller = loader.getController();
             
             // Pass the selected user to the userController for editing
             controller.setUser(selectedUser);
             controller.setUserList(userList); // Pass the user list to the controller
         
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } // end of if
+
+    } // end of openUser
+
+
+
+
+    // Open the editing user when an box is double-clicked
+    private void openUser(User selectedUser) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+            Parent root = loader.load();
+    
+            locationHomeController controller = loader.getController();
+    
+            int userID = selectedUser.getID(); 
+            System.out.println("User Passed ID: " + userID);
+    
+            controller.setSelectedUser(userID); 
+            controller.displayLocations(userID); 
+    
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of try
-        
-        catch (IOException e) {
-            e.printStackTrace();
-        } // end of catch
-    } // end of editUser
-
-
-    public void setUserList(ObservableList<User> userList) {
-        this.userList = userList;
-        tableView.setItems(userList);  // Update the table with the new list
-        tableView.refresh(); // Ensure the table view is refreshed to reflect changes
     
-        saveData();
-    } // end of setUserList
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     
     @FXML
@@ -222,14 +233,14 @@ public class userHomeController {
     public void saveData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.csv"))) {
             // Write the header (optional)
-            writer.write("User");
+            writer.write("ID, UserName");
             writer.newLine();
             
             // Write each box in the list to the CSV file
             for (User user : userList) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(user.getName());
-                writer.write(sb.toString());
+                //StringBuilder sb = new StringBuilder();
+                //sb.append(user.getName());
+                writer.write(user.getID() + "," + user.getName());
                 writer.newLine(); // Ensure each users is written on a new line
             }
         } catch (IOException e) {
@@ -239,6 +250,9 @@ public class userHomeController {
 
     // Loads the users from the csv
     public void loadData() {
+
+        // User.resetIDCounter();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("users.csv"))) {
             String line;
             ArrayList<User> loadedList = new ArrayList<>();
@@ -247,17 +261,19 @@ public class userHomeController {
             reader.readLine();
             
             // Read each line and create a Box object
-            while ((line = reader.readLine()) != null) {
-                // Create a new user object and add it to the list
-                User newUser = new User();
-                newUser.setName(line);
-
+           while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 2) {
+                int id = Integer.parseInt(parts[0].trim());
+                String name = parts[1].trim();
+                User newUser = new User(id, name); // This should set name & update ID counter
                 loadedList.add(newUser);
             }
-            
-            // Update the boxList and refresh the table
-            userList.setAll(loadedList);
-            tableView.setItems(userList);
+        }
+
+        userList.setAll(loadedList);
+        tableView.setItems(userList);
+        tableView.refresh();
             
         } catch (IOException e) {
             e.printStackTrace();

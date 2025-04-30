@@ -17,7 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
- 
+
 public class userController {
     private Stage stage;
     private Scene scene;
@@ -68,8 +68,8 @@ public class userController {
         } 
         else {
             // If currentBox is null, create a new user
-            User newUser = new User();
-            newUser.setName(userNameField.getText());
+            User newUser = new User(userNameField.getText());
+            //newUser.setName(userNameField.getText());
     
             // Add the new user to the list
             userList.add(newUser);
@@ -95,4 +95,4 @@ public class userController {
     public void setUserList(ObservableList<User> userList) {
         this.userList = userList;
     } // end of setUserList
-} // end of userController 
+} // end of userController

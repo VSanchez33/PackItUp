@@ -6,57 +6,53 @@
 
 package PackItUp;
 
-import java.util.ArrayList;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Box {
+public class Box { 
 
-    // remove owner
+    private int locationID; // Link to Location by ID
+    private static int nextBoxID = 1;
     private StringProperty boxOwner;
     private StringProperty boxName;
-    // remove date
     private StringProperty boxDate;
     private StringProperty packingReason;
-<<<<<<< HEAD
-    // private ArrayList<Item> items;
-=======
-    // maybe boxID 
->>>>>>> main
     private IntegerProperty boxID;
-    // remove total boxes
     private IntegerProperty totalBoxes;
-    private String location;
- 
+
     public Box() {
-        boxName = new SimpleStringProperty("Box");
-        boxDate = new SimpleStringProperty("01/01/2000");
-        packingReason = new SimpleStringProperty("Miscellaneous");
-        boxOwner = new SimpleStringProperty("No one");
-        // items = new ArrayList<>();
-        boxID = new SimpleIntegerProperty(1);
-        totalBoxes = new SimpleIntegerProperty(1);
-    } // End of constructor
-    
-    public StringProperty boxNameProperty(){
+        this.boxID = new SimpleIntegerProperty(nextBoxID++);
+        this.boxName = new SimpleStringProperty("Box");
+        this.boxDate = new SimpleStringProperty("01/01/2000");
+        this.packingReason = new SimpleStringProperty("Miscellaneous");
+        this.boxOwner = new SimpleStringProperty("No one");
+        this.totalBoxes = new SimpleIntegerProperty(1);
+    }
+
+    public Box(int locationID) {
+        this(); // Call the default constructor
+        this.locationID = locationID;
+    }
+
+    public StringProperty boxNameProperty() {
         return boxName;
     }
 
-    public StringProperty boxDateProperty(){
+    public StringProperty boxDateProperty() {
         return boxDate;
     }
 
-    public StringProperty packingReasonProperty(){
+    public StringProperty packingReasonProperty() {
         return packingReason;
     }
 
-    public IntegerProperty boxIDProperty(){
+    public IntegerProperty boxIDProperty() {
         return boxID;
     }
 
-    public IntegerProperty totalBoxesProperty(){
+    public IntegerProperty totalBoxesProperty() {
         return totalBoxes;
     }
 
@@ -71,10 +67,6 @@ public class Box {
     public void setReason(String reason) {
         this.packingReason.set(reason);
     }
-
-    // public void addItems(Item item) {
-    //     items.add(item);
-    // }
 
     public void setBoxID(int ID) {
         this.boxID.set(ID);
@@ -96,10 +88,6 @@ public class Box {
         return packingReason.get();
     }
 
-    // public ArrayList<Item> getPackedItems() {
-    //     return items;
-    // }
-
     public int getBoxID() {
         return boxID.get();
     }
@@ -108,19 +96,19 @@ public class Box {
         return totalBoxes.get();
     }
 
-    public void setBoxOwner(String owner){
+    public void setBoxOwner(String owner) {
         this.boxOwner.set(owner);
     }
 
-    public String getBoxOwner(){
+    public String getBoxOwner() {
         return boxOwner.get();
     }
 
-    public String getLocation(){
-        return location;
+    public int getLocationID() {
+        return locationID;
     }
 
-    public void setLocation(String location){
-        this.location = location;
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
     }
 }

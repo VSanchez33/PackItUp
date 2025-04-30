@@ -18,51 +18,54 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class boxController {
+
+    private Box currentBox;
+    private ObservableList<Box> boxList;
+    private static int locationID;
     private Stage stage;
     private Scene scene;
     private Parent root;
-
-    private ObservableList<Box> boxList; // This will store the boxes from boxHomeController
-    private Box currentBox; // Store the box currently being edited
     private DataManager dataManager = DataManager.getInstance();
-    private static String location;
-    
+
     @FXML
     private TextField idField;
-
     @FXML
     private TextField ownerField;
-
     @FXML
     private TextField nameField;
-    
 
-    // Author: Tabatha Valverde
-    // Method to initialize the controller
-    @FXML 
+    // Initialize the form with data for editing
+    @FXML
     public void initialize() {
         if (currentBox != null) {
-            // Load the box data into the fields if there's an box to edit
-            idField.setText("" + currentBox.getBoxID());
-            ownerField.setText(currentBox.getBoxOwner()); 
-            nameField.setText(currentBox.getBoxName()); 
-        } // end of if
-    } // end of initialize
+            idField.setText(String.valueOf(currentBox.getBoxID()));
+            ownerField.setText(currentBox.getBoxOwner());
+            nameField.setText(currentBox.getBoxName());
+        }
+    }
 
-
-    // Author: Tabatha Valverde
-    // Set the box to the list
+    // Set the box being edited or created
     public void setBox(Box box) {
         this.currentBox = box;
-        // Populate fields with the selected box data for editing
-        idField.setText("" + currentBox.getBoxID());
-        ownerField.setText(currentBox.getBoxOwner());
+        idField.setText(String.valueOf(currentBox.getBoxID()));
+        //ownerField.setText(currentBox.getBoxOwner());
         nameField.setText(currentBox.getBoxName());
-    } // end of setBox
+    }
 
+    // Set the location ID for this box
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
+    }
 
-    // Author: Tabatha Valverde
-    // Cancels item creation or edit 
+    // @FXML
+    // public void saveBox() {
+    //     if (currentBox != null) {
+    //         currentBox.setBoxOwner(ownerField.getText());
+    //         currentBox.setBoxName(nameField.getText());
+    //         currentBox.setLocationID(locationID);
+    //     }
+    // }
+
     @FXML
     public void cancel (ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("box.fxml"));
@@ -70,29 +73,32 @@ public class boxController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    } // end of cancel    
 
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } // end of cancel 
+
+    public void setBoxList(ObservableList<Box> boxList) {
+        this.boxList = boxList;
+    } // end of setLocationList
 
     // Author: Tabatha Valverde and Vincent Sanchez
     // Saves the box created or edited
     @FXML
-    private void saveBox(ActionEvent event) throws IOException {
+    void saveBox(ActionEvent event) throws IOException {
+
         if (currentBox != null) {
-            // If we're updating an existing box, apply changes
-            currentBox.setBoxID(Integer.parseInt(idField.getText()));
-            currentBox.setBoxOwner(ownerField.getText());
+            // If we're updating an existing location, apply changes
             currentBox.setBoxName(nameField.getText());
         } 
         else {
-            // If currentBox is null, create a new box
+            // If currentBox is null, create a new location
             Box newBox = new Box();
-            newBox.setBoxID(Integer.parseInt(idField.getText()));
-            newBox.setBoxOwner(ownerField.getText());
             newBox.setBoxName(nameField.getText());
-             // Sets the location for the location the item is stored in 
-            newBox.setLocation(location);
-
-            // Add the new box to the list
+            newBox.setLocationID(locationID);
+            // Add the new location to the list
             boxList.add(newBox);
             dataManager.getBoxList().add(newBox);
         } // end of else
@@ -101,25 +107,17 @@ public class boxController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
         Parent root = loader.load();
     
-        // Pass the updated box list to boxHomeController
+        // Pass the updated location list to locationHomeController
         boxHomeController controller = loader.getController();
         controller.setBoxList(boxList); 
-        controller.setSelectedLocation(location);
+        controller.setSelectedLocationID(locationID);
     
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    } // end of saveBox
- 
+    } // end of saveLocation
 
-    // Author: Tabatha Valverde
-    // Setter to receive the list of boxess from homeController
-    public void setBoxList(ObservableList<Box> boxList) {
-        this.boxList = boxList;
-    } // end of setBoxList
 
-    public void setLocation(String location){
-        this.location = location;
-    }
-} // end of boxController 
+
+}

@@ -14,25 +14,41 @@ import javafx.collections.ObservableList;
 
 public class Location {
 
+   private static int idCounter = 1;
    private IntegerProperty locationID;
    private StringProperty name;
-<<<<<<< HEAD
-=======
-   // maybe box list
->>>>>>> main
    private ArrayList<Box> boxList;
    private IntegerProperty totalBoxes;
-   private String user;
+   private int userID;
 
    public Location() {
-      locationID = new SimpleIntegerProperty(1);
-      name = new SimpleStringProperty("Location");
-      // boxes
-      totalBoxes = new SimpleIntegerProperty(0);
-      // UserID
+      this.locationID = new SimpleIntegerProperty(idCounter++);
+      this.name = new SimpleStringProperty("Location");
+      this.totalBoxes = new SimpleIntegerProperty(0);
+      this.boxList = new ArrayList<>();
+   }
+
+   public Location(int id, String name, int userID) {
+      this.locationID = new SimpleIntegerProperty(id);
+      this.name = new SimpleStringProperty(name);
+      this.totalBoxes = new SimpleIntegerProperty(0);
+      this.userID = userID;
+      this.boxList = new ArrayList<>();
+
+      if (id >= idCounter) {
+         idCounter = id + 1;
+      }
    }
 
    // Getters and Setters
+
+   public int getLocationID() {
+      return locationID.get();
+   }
+
+   public void setLocationID(int id) {
+      locationID.set(id);
+   }
 
    public void setLocationName(String newName) {
       name.set(newName);
@@ -42,17 +58,24 @@ public class Location {
       return name.get();
    }
 
-
-   // get and set boxes
    public ArrayList<Box> getBoxes() {
    return boxList;
    }
 
-   public String getSelectedUser(){
-      return user;
+   public void setBoxes(ArrayList<Box> boxes) {
+      this.boxList = boxes;
    }
 
-   public void setUser(String user){
-      this.user = user;
+  public int getUserID() {
+      return userID;
    }
+
+  public void setUserID(int id) {
+      this.userID = id;
+   }
+
+  public static void resetIDCounter() {
+      idCounter = 1;
+   }
+   
 }

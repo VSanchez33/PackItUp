@@ -10,18 +10,35 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 public class User {
 
+    private static int idCounter = 1;
     private StringProperty userName;
-    // maybe user ID
     private IntegerProperty userID;
     private ArrayList<Location> locations;
 
     public User() {
-        userName = new SimpleStringProperty("UserName");
-        userID = new SimpleIntegerProperty(1);
-        locations = new ArrayList<>();
+        this.userID = new SimpleIntegerProperty(idCounter++);
+        this.userName = new SimpleStringProperty("UserName");
+        this.locations = new ArrayList<>();
+    }
+
+    public User(String name) {
+        this.userID = new SimpleIntegerProperty(idCounter++);
+        this.userName = new SimpleStringProperty(name);
+        this.locations = new ArrayList<>();
+    }
+
+    public User(int id, String name) {
+        this.userID = new SimpleIntegerProperty(id);
+        this.userName = new SimpleStringProperty(name);
+        this.locations = new ArrayList<>();
+    
+        if (id >= idCounter) {
+            idCounter = id + 1;
+        }
     }
 
     // Setters and getters
@@ -46,4 +63,7 @@ public class User {
         return locations;
     }
     
+    public static void resetIDCounter() {
+        idCounter = 1;
+    }
 }

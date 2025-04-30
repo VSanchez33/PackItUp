@@ -1,1 +1,2 @@
-BoxID,BoxName,BoxDate,BoxOwner,Location
+BoxID,BoxName,BoxDate,LocationID
+8,B,01/01/2000,No one,1
