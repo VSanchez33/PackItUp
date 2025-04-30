@@ -92,10 +92,12 @@ public class boxController {
         if (currentBox != null) {
             // If we're updating an existing location, apply changes
             currentBox.setBoxName(nameField.getText());
+            currentBox.setBoxID(Integer.parseInt(idField.getText()));
         } 
         else {
             // If currentBox is null, create a new location
             Box newBox = new Box();
+            newBox.setBoxID(Integer.parseInt(idField.getText()));
             newBox.setBoxName(nameField.getText());
             newBox.setLocationID(locationID);
             // Add the new location to the list

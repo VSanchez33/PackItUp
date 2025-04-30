@@ -21,12 +21,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class itemHomeController {
@@ -50,6 +52,9 @@ public class itemHomeController {
     // @FXML
     // private TableColumn<Item, String> ownerColumn;
 
+    @FXML
+    private TextField searchField;
+
 
     // Author: Tabatha Valverde
     @FXML
@@ -68,6 +73,32 @@ public class itemHomeController {
 
         // Load data
         loadData();
+
+        // Setup search functionality
+        FilteredList<Item> filteredData = new FilteredList<>(itemList, p -> true);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(item -> {
+                // If search is empty, show all
+                if (newValue == null || newValue.isEmpty()) {
+                    return item.getBoxID() == selectedBoxID;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                return item.getBoxID() == selectedBoxID &&
+                    (item.getName().toLowerCase().contains(lowerCaseFilter) ||
+                        item.getDate().toLowerCase().contains(lowerCaseFilter) ||
+                        String.valueOf(item.getQuantity()).contains(lowerCaseFilter));
+            });
+            tableView.setItems(filteredData);
+            tableView.refresh();
+        });
+
+        // Default display
+        tableView.setItems(filteredData);
+        tableView.refresh();
+
+        System.out.println("itemHomeController initialized with selectedBoxID: " + selectedBoxID);
 
         // Handle row click to select item
         // tableView.setOnMouseClicked(event -> {

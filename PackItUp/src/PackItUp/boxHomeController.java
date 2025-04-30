@@ -50,6 +50,7 @@ public class boxHomeController {
     // Author: Tabatha Valverde and Vincent Sanchez
     @FXML
     private void initialize() {
+        
         loadData();
 
         // Set up each column to display the correct property
