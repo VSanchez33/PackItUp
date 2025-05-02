@@ -1,19 +1,35 @@
-# Pack It Up   
+# Pack It Up      
 
-## [Basic UML Diagram](https://lucid.app/lucidchart/d6440274-b064-42ae-ab0b-dc659a7d1960/edit?viewport_loc=443%2C55%2C2020%2C1156%2CHWEp-vi-RSFO&invitationId=inv_93445c0c-ceb6-4084-9db1-a3038ddb09f2)   
-+ This is the first idea plan on how we are going to implement our code.   
+## Project Structure
+- `src/` – Source code for the application
+- `pom.xml` – Maven configuration file
+- `target/` – Compiled output (generated after build)
+- `javafx-sdk-23.0.2/` – JavaFX SDK
 
-## Pack it up user guide
-Last updated: 24 - Feb - 2025   
+## Running Pack It Up
+### Requirements 
+* A Unix/Linux based system (not tested on Windows)
+* Java 23+
+* Maven (to generate JAR files)
 
-Developers:   
-Austin Matthys     
-Bryson Young   
-Vincent Sanchez   
-Tabatha Valverde   
+### 1. Clone the Repository
+```bash
+git clone https://github.com/NMSU-CS-CS371/cs371-sp2025-teamproject-pack-it-up.git 
+```
+> **Note**: All commands below should be run from the root directory of the repository 
+### 2. Building the Project
+```bash
+mvn clean package
+```
 
-What is Pack It Up?   
-Product that will make organizing easier by providing you with the tools to manage your belongings.  
+### 3. Running the App
+```bash
+java --module-path javafx-sdk-23.0.2/lib --add-modules javafx.controls,javafx.fxml -jar target/Main-1.0-SNAPSHOT.jar
+```
+
+### [Wiki Home Page](https://github.com/NMSU-CS-CS371/cs371-sp2025-teamproject-pack-it-up/wiki)
+All of the information about Pack It Up can be found in the wiki!
+
 
 ![image](https://github.com/user-attachments/assets/21a57ca2-3547-40ee-9dcc-2f922c2b3fac)   
 ![image](https://github.com/user-attachments/assets/3a70e036-e2c5-40ed-bfac-daa578a2adc4)   
