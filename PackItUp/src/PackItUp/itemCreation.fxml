@@ -22,7 +22,7 @@
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="259.0" layoutY="338.0" mnemonicParsing="false" onAction="#saveItem" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
+            <Button layoutX="259.0" layoutY="338.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: #3c9732;" text="Save" textFill="WHITE">
                <font>
                   <Font name="Futura Bold" size="21.0" />
                </font>
@@ -81,7 +81,7 @@
                   <HBox prefHeight="2.0" prefWidth="511.0" />
                </children>
             </VBox>
-            <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" style="-fx-background-color: #000000;" text="Back" textFill="WHITE" />
+            <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" style="-fx-background-color: #000000;" text="Cancel" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

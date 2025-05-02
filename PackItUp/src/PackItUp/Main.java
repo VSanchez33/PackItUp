@@ -1,4 +1,9 @@
-package PackItUp;
+/*
+ * Authors: 
+ *      Vincent Sanchez
+ */
+
+ package PackItUp;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -21,8 +21,8 @@
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#createLocation" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
-            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#deleteLocation" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
+            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#create" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
+            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
             <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" wrappingWidth="105.52001953125">
                <font>
                   <Font name="Futura Bold" size="18.0" />
@@ -33,7 +33,7 @@
                   <TableColumn fx:id="locationColumn" prefWidth="460.0" text="Location" />
                </columns>
             </TableView>
-            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#editLocation" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Edit" textFill="WHITE" AnchorPane.rightAnchor="536.0" />
+            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Edit" textFill="WHITE" AnchorPane.rightAnchor="536.0" />
          </children>
       </AnchorPane>
    </children>
