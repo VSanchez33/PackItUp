@@ -1,6 +1,7 @@
 /*
 * Authors:
 *      Vincent Sanchez
+*      Tabatha Valverde
 */
 
 package PackItUp;
@@ -28,108 +29,133 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class locationHomeController implements HomeController<Location>{ 
+public class locationHomeController {
 
+    // Variable declaration
     private ObservableList<Location> locationList = FXCollections.observableArrayList(); // List to store locations
     private Stage stage;
     private Scene scene;
     private Parent root;
-    public static String selectedUser;
+    private static int selectedUserID;
 
     @FXML
     private TableView<Location> tableView;
+
     @FXML
     private TableColumn<Location, String> locationColumn;
 
-
+    // Method to initialize the controller
     @FXML
-    public void initialize() {
-        loadData();
+    private void initialize() {
 
         // Set up each column to display the correct property
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-    
+
         // Initially populate the table with data from locationList
-        displayLocations(selectedUser);
-    
+        displayLocations(selectedUserID);
+
         // Load data
         loadData();
-        
+
         // Handle row click to select location
         tableView.setOnMouseClicked(event -> {
+
             if (event.getClickCount() == 2) { // Double click to edit
-                
+
                 Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
+
                 if (selectedLocation != null) {
+
                     // Call edit method to open the location creation screen for editing
-                    edit(selectedLocation);
+                    openLocation(selectedLocation);
                     saveData();
+
                 } // end of if
+
             } // end of if
+
         }); // end of tableView
 
         saveData();
-        // debug code
-        System.out.println("locationHomeController initialized with selectedUser: " + selectedUser);
+
+        System.out.println("locationHomeController initialized with selectedUser: " + selectedUserID);
+
     } // end of initialize
 
-    public void openLocation(ActionEvent event) throws IOException {
-        Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
+    // Open the box when an box is double-clicked
+    private void openLocation(Location selectedLocation) {
 
-        if (selectedLocation != null) {
+        try {
+
+            // Navigate to box creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
             Parent root = loader.load();
 
+            // Get the controller of the box creation screen
             boxHomeController controller = loader.getController();
-            String location = selectedLocation.getName(); 
-            controller.setSelectedLocation(location);
-            controller.displayBoxes(location);
-        
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            int locationID = selectedLocation.getLocationID();
+            System.out.println("Location Passed ID: " + locationID);
+
+            // Pass the location's ID to the boxHomeController
+            controller.setSelectedLocation(locationID);
+            controller.displayBoxes(locationID); // Filter boxes by locationID
+
+            // Set up the stage and scene for the box creation screen
+            Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of if
-    } // end of openLocation
 
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } // end of try/catch
+
+    } // end of openLocation
 
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
+
         saveData();
         root = FXMLLoader.load(getClass().getResource("user.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
     } // end of goBack
 
-
     // Button that opens the location creation screen
-    public void create(ActionEvent event) throws IOException {
+    public void createLocation(ActionEvent event) throws IOException {
+
         saveData();
 
         System.out.println("Navigating to location creation screen...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("addLocation.fxml"));
         root = loader.load();
-    
+
         locationController controller = loader.getController();
         controller.setList(locationList);
-        controller.setUser(selectedUser);
-    
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        controller.setID(selectedUserID);
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    } // end of createLocation
 
+    } // end of createLocation
 
     // Button that allows the user to delete the selected list location
     @FXML
-    public void delete(ActionEvent event) throws IOException {
-        // Get the selected location from the TableView
-        Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
+    void deleteLocation(ActionEvent event) throws IOException {
+
+        Location selectedLocation = tableView.getSelectionModel().getSelectedItem(); // Get the selected location from
+                                                                                     // the TableView
 
         if (selectedLocation != null) {
+
             // Show a confirmation dialog before deletion
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Confirm Deletion");
@@ -137,154 +163,183 @@ public class locationHomeController implements HomeController<Location>{
             alert.setContentText(selectedLocation.getName());
 
             Optional<ButtonType> result = alert.showAndWait();
+
             if (result.isPresent() && result.get() == ButtonType.OK) {
+
                 // Remove the selected location from the location list
                 locationList.remove(selectedLocation);
-                displayLocations(selectedUser);
-                // Refresh the table
-                tableView.refresh();
+                tableView.setItems(locationList);
+                tableView.refresh(); // Refresh the table
                 saveData();
-            } // end of if
-        } // end of if
-        else {
-            // Show a message if no location was selected
-            System.out.println("No location selected for deletion.");
-        } // end of else
-        saveData();
-    } // end of deleteLocation
-    
 
-    // Open the editing view when an location is double-clicked
-    public void edit(Location selected) {
-        try {
-            // Navigate to location creation screen for editing
+            } // end of if
+
+        } // end of if
+
+        else {
+
+            System.out.println("No location selected for deletion."); // Show a message if no location was selected
+
+        } // end of else
+
+        saveData();
+
+    } // end of deleteLocation
+
+    // Edit location by selecting the desired location and clicking the Edit button
+    public void editLocation(ActionEvent event) throws IOException {
+
+        Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedLocation != null) {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addLocation.fxml"));
             Parent root = loader.load();
 
             locationController controller = loader.getController();
-            
+
             // Pass the selected location to the locationController for editing
-            controller.setLocation(selected);
+            controller.setLocation(selectedLocation);
             controller.setList(locationList); // Pass the location list to the controller
-        
-            Stage stage = (Stage) tableView.getScene().getWindow();
+            controller.setID(selectedUserID); // Get user ID to load correct location
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of try
-        
-        catch (IOException e) {
-            e.printStackTrace();
-        } // end of catch
+
+        } // end of if
+
     } // end of editLocation
 
+    public void setLocationList(ObservableList<Location> locationList) {
 
-    public void setList(ObservableList<Location> locationList) {
         this.locationList = locationList;
-        tableView.setItems(locationList);  // Update the table with the new list
+        tableView.setItems(locationList); // Update the table with the new list
         tableView.refresh(); // Ensure the table view is refreshed to reflect changes
-    
+
         saveData();
+
     } // end of setLocationList
 
-    
     @FXML
     private void handleEditLocation(ActionEvent event) throws IOException {
+
         Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
-    
+
         if (selectedLocation != null) {
+
             // Navigate to location creation screen for editing
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addLocation.fxml"));
             Parent root = loader.load();
-    
+
             // Get the controller of locationCreation.fxml
             locationController controller = loader.getController();
-            
+
             // Set the current location to the selected location for editing
             controller.setLocation(selectedLocation);
-            controller.setList(locationList); 
-    
+            controller.setList(locationList);
+
             // Show the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } // end of if
-        else {
-            // Handle case when no location is selected
-            System.out.println("No location selected for editing.");
-        } // end of else
-        saveData();
-    } // end of handleEditLocation
 
+        } // end of if
+
+        else {
+
+            System.out.println("No location selected for editing."); // Handle case when no location is selected
+
+        } // end of else
+
+        saveData();
+
+    } // end of handleEditLocation
 
     // Saves the locations to the csv file
     public void saveData() {
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("locations.csv"))) {
-            // Write the header (optional)
-            writer.write("Location,User");
+
+            writer.write("ID,Name,UserID");
             writer.newLine();
-            
-            // Write each location in the list to the CSV file
+
             for (Location location : locationList) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(location.getName()).append(",");
-                sb.append(location.getSelectedUser());
-                writer.write(sb.toString());
-                writer.newLine(); // Ensure each location is written on a new line
-            }
+
+                writer.write(location.getLocationID() + "," + location.getName() + "," + location.getUserID());
+                writer.newLine();
+
+            } // end of for
+
         } catch (IOException e) {
+
             e.printStackTrace();
-        }
-    }  // end of saveData
+
+        } // end of try/catch
+
+    } // end of saveData
 
     // Loads the locations from the csv
     public void loadData() {
+
+        Location.resetIDCounter();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("locations.csv"))) {
+
             String line;
             ArrayList<Location> loadedList = new ArrayList<>();
-            
-            // Skip header line
-            reader.readLine();
-            
-            // Read each line and create a Box object
+
+            reader.readLine(); // Skip header
+
             while ((line = reader.readLine()) != null) {
-                String[] data =line.split(",");
 
-                String location = data[0];
-                String user = data[1];
-                // Create a new Location object and add it to the list
-                Location newLocation = new Location();
-                newLocation.setLocationName(location);
-                newLocation.setUser(user);
+                String[] data = line.split(",");
 
-                loadedList.add(newLocation);
-            }
-            
-            // Update the locationList and refresh the table
+                if (data.length == 3) {
+
+                    int id = Integer.parseInt(data[0].trim());
+                    String name = data[1].trim();
+                    int userID = Integer.parseInt(data[2].trim());
+
+                    Location newLocation = new Location(id, name, userID);
+                    loadedList.add(newLocation);
+
+                } // end of if
+
+            } // end of while
+
             locationList.setAll(loadedList);
             tableView.setItems(locationList);
-            
+            tableView.refresh();
+
         } catch (IOException e) {
+
             e.printStackTrace();
-        }
-    }
 
-    public void setSelectedUser(String user) {
-        this.selectedUser = user;  // Or store the whole user object if needed
+        } // end of try/catch
+
+    } // end of loadData
+
+    public void setSelectedUser(int userID) {
+
+        selectedUserID = userID;
         loadData();
-        displayLocations(selectedUser);
+        displayLocations(userID);
+
+    } // setSelectedUser
+
+    public int getSelectedUser() {
+        return selectedUserID;
     }
 
-    public String getSelectedUser(){
-        return selectedUser;
-    }
+    public void displayLocations(int userID) {
 
-    public void displayLocations(String user){
-        ObservableList<Location> filteredList = locationList.filtered(location -> location.getSelectedUser().equals(user));
+        ObservableList<Location> filteredList = locationList.filtered(location -> location.getUserID() == userID);
         tableView.setItems(filteredList);
         tableView.refresh();
-        saveData();
-    }
+
+    } // end of displayLocations
 
 } // end of locationHomeController

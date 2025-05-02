@@ -32,7 +32,7 @@
                   <Font name="Futura Bold" size="18.0" />
                </font>
             </Text>
-            <VBox layoutX="45.0" layoutY="177.0" prefHeight="152.0" prefWidth="511.0">
+            <VBox layoutX="45.0" layoutY="186.0" prefHeight="152.0" prefWidth="511.0">
                <children>
                   <HBox prefHeight="29.0" prefWidth="567.0">
                      <children>
@@ -78,20 +78,10 @@
                         <TextField fx:id="amountField" prefHeight="26.0" prefWidth="399.0" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="29.0" prefWidth="567.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" wrappingWidth="153.32799911499023">
-                           <font>
-                              <Font name="Futura Bold" size="18.0" />
-                           </font>
-                        </Text>
-                        <!-- Add fx:id to bind the TextField to the controller -->
-                        <TextField fx:id="ownerField" prefHeight="26.0" prefWidth="362.0" />
-                     </children>
-                  </HBox>
+                  <HBox prefHeight="2.0" prefWidth="511.0" />
                </children>
             </VBox>
-            <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" style="-fx-background-color: #000000;" text="Back" textFill="WHITE" />
+            <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" style="-fx-background-color: #000000;" text="Cancel" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

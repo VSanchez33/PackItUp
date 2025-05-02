@@ -21,8 +21,8 @@
                </font>
             </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9e7e4f" height="46.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#create" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
-            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
+            <Button layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#createBox" style="-fx-background-color: #3c9732;" text="+" textFill="WHITE" />
+            <Button layoutX="524.0" layoutY="123.0" mnemonicParsing="false" onAction="#deleteBox" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: #a11919;" text="-" textFill="WHITE" />
             <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" wrappingWidth="105.52001953125">
                <font>
                   <Font name="Futura Bold" size="18.0" />
@@ -31,11 +31,10 @@
             <TableView fx:id="tableView" layoutX="67.0" layoutY="172.0" prefHeight="202.0" prefWidth="461.0" style="-fx-background-color: #CD9F61;">
                <columns>
                   <TableColumn fx:id="idColumn" prefWidth="92.0" text="ID" />
-                  <TableColumn fx:id="ownerColumn" prefWidth="104.0" text="Owner" />
-                  <TableColumn fx:id="boxNameColumn" prefWidth="264.0" text="Name" />
+                  <TableColumn fx:id="boxNameColumn" prefWidth="368.0" text="Name" />
                </columns>
             </TableView>
-            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#openBox" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Open" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#editBox" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #000000;" text="Edit" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

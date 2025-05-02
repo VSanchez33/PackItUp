@@ -3,10 +3,10 @@
  *      Bryson Young
  */
 
-
 package PackItUp;
 
 import java.util.ArrayList;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,109 +14,81 @@ import javafx.beans.property.StringProperty;
 
 public class Box {
 
-    // remove owner
-    private StringProperty boxOwner;
+    // Variable declaration
+    private int locationID; // Link to Location by ID
+    private static int idBoxCounter = 1;
     private StringProperty boxName;
-    // remove date
-    private StringProperty boxDate;
-    private StringProperty packingReason;
-    // maybe boxID 
+    private StringProperty boxInputID;
     private IntegerProperty boxID;
-    // remove total boxes
-    private IntegerProperty totalBoxes;
-    private String location;
- 
+    private ArrayList<Item> itemList;
+
+    // Constructors
     public Box() {
-        boxName = new SimpleStringProperty("Box");
-        boxDate = new SimpleStringProperty("01/01/2000");
-        packingReason = new SimpleStringProperty("Miscellaneous");
-        boxOwner = new SimpleStringProperty("No one");
-        // items = new ArrayList<>();
-        boxID = new SimpleIntegerProperty(1);
-        totalBoxes = new SimpleIntegerProperty(1);
-    } // End of constructor
-    
-    public StringProperty boxNameProperty(){
-        return boxName;
+
+        this.boxID = new SimpleIntegerProperty(idBoxCounter++);
+        this.boxName = new SimpleStringProperty("Box");
+        this.boxInputID = new SimpleStringProperty("1");
+        this.itemList = new ArrayList<>();
+
     }
 
-    public StringProperty boxDateProperty(){
-        return boxDate;
+    public Box(int id, String name, String input, int locationID) {
+
+        this.boxID = new SimpleIntegerProperty(id);
+        this.boxName = new SimpleStringProperty(name);
+        this.boxInputID = new SimpleStringProperty(input);
+        this.locationID = locationID;
+        this.itemList = new ArrayList<>();
+
+        if (id >= idBoxCounter) {
+            idBoxCounter = id + 1;
+        }
     }
 
-    public StringProperty packingReasonProperty(){
-        return packingReason;
+    // Setters and getters
+
+    public void setBoxID(int ID) {
+        this.boxID.set(ID);
     }
 
-    public IntegerProperty boxIDProperty(){
-        return boxID;
-    }
-
-    public IntegerProperty totalBoxesProperty(){
-        return totalBoxes;
+    public int getBoxID() {
+        return boxID.get();
     }
 
     public void setBoxName(String name) {
         this.boxName.set(name);
     }
 
-    public void setBoxDate(String date) {
-        this.boxDate.set(date);
-    }
-
-    public void setReason(String reason) {
-        this.packingReason.set(reason);
-    }
-
-    // public void addItems(Item item) {
-    //     items.add(item);
-    // }
-
-    public void setBoxID(int ID) {
-        this.boxID.set(ID);
-    }
-
-    public void setTotalBoxes(int boxes) {
-        this.totalBoxes.set(boxes);
-    }
-
     public String getBoxName() {
         return boxName.get();
     }
 
-    public String getBoxDate() {
-        return boxDate.get();
+    public void setBoxInput(String input) {
+        this.boxInputID.set(input);
     }
 
-    public String getReason() {
-        return packingReason.get();
+    public String getBoxInput() {
+        return boxInputID.get();
     }
 
-    // public ArrayList<Item> getPackedItems() {
-    //     return items;
-    // }
-
-    public int getBoxID() {
-        return boxID.get();
+    public void setItems(ArrayList<Item> items) {
+        this.itemList = items;
     }
 
-    public int getTotalBoxes() {
-        return totalBoxes.get();
+    public ArrayList<Item> getItems() {
+        return itemList;
     }
 
-    public void setBoxOwner(String owner){
-        this.boxOwner.set(owner);
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
     }
 
-    public String getBoxOwner(){
-        return boxOwner.get();
+    public int getLocationID() {
+        return locationID;
     }
 
-    public String getLocation(){
-        return location;
+    public static void resetIDCounter() {
+        idBoxCounter = 1;
     }
 
-    public void setLocation(String location){
-        this.location = location;
-    }
-}
+} // end of Box

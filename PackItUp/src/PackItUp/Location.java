@@ -10,26 +10,46 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
+
 
 public class Location {
 
+   // Variable declaration
+   private static int idLocCounter = 1;
    private IntegerProperty locationID;
    private StringProperty name;
-   // maybe box list
    private ArrayList<Box> boxList;
-   private IntegerProperty totalBoxes;
-   private String user;
+   private int userID;
 
+   // Constructors
    public Location() {
-      locationID = new SimpleIntegerProperty(1);
-      name = new SimpleStringProperty("Location");
-      // boxes
-      totalBoxes = new SimpleIntegerProperty(0);
-      // UserID
+      
+      this.locationID = new SimpleIntegerProperty(idLocCounter++);
+      this.name = new SimpleStringProperty("Location");
+      this.boxList = new ArrayList<>();
    }
 
-   // Getters and Setters
+   public Location(int id, String name, int userID) {
+      
+      this.locationID = new SimpleIntegerProperty(id);
+      this.name = new SimpleStringProperty(name);
+      this.userID = userID;
+      this.boxList = new ArrayList<>();
+
+      if (id >= idLocCounter) {
+         idLocCounter = id + 1;
+      }
+   }
+
+   // Setters and getters
+
+   public void setLocationID(int id) {
+      locationID.set(id);
+   }
+
+   public int getLocationID() {
+      return locationID.get();
+   }
 
    public void setLocationName(String newName) {
       name.set(newName);
@@ -39,17 +59,24 @@ public class Location {
       return name.get();
    }
 
+   public void setBoxes(ArrayList<Box> boxes) {
+      this.boxList = boxes;
+   }
 
-   // get and set boxes
    public ArrayList<Box> getBoxes() {
    return boxList;
    }
 
-   public String getSelectedUser(){
-      return user;
+   public void setUserID(int id) {
+      this.userID = id;
    }
 
-   public void setUser(String user){
-      this.user = user;
+   public int getUserID() {
+      return userID;
    }
-}
+
+   public static void resetIDCounter() {
+      idLocCounter = 1;
+   }
+   
+} // end of Location class
