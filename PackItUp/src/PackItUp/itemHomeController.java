@@ -117,7 +117,7 @@ public class itemHomeController implements homeController<Item> {
 
         if (selectedItem != null) {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("itemCreation.fxml"));
             Parent root = loader.load();
 
             itemController controller = loader.getController();
@@ -161,11 +161,11 @@ public class itemHomeController implements homeController<Item> {
     } // end of goBack
 
     // Button that opens the item creation screen
-    public void create(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException { 
 
         saveData();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemCreation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("itemCreation.fxml"));
         root = loader.load();
 
         itemController controller = loader.getController();
