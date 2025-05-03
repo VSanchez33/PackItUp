@@ -14,7 +14,7 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/NMSU-CS-CS371/cs371-sp2025-teamproject-pack-it-up.git 
+git clone https://github.com/VSanchez33/PackItUp.git
 ```
 > **Note**: All commands below should be run from the directory PackItUp
 ```bash
