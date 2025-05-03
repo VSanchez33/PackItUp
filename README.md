@@ -16,7 +16,7 @@
 ```bash
 git clone https://github.com/VSanchez33/PackItUp.git
 ```
-> **Note**: All commands below should be run from the directory PackItUp
+> **Note**: All commands below should be run from the directory PackItUp/PackItUp
 ```bash
 mvn clean package
 ```
