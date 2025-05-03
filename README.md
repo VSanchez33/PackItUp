@@ -16,8 +16,7 @@
 ```bash
 git clone https://github.com/NMSU-CS-CS371/cs371-sp2025-teamproject-pack-it-up.git 
 ```
-> **Note**: All commands below should be run from the root directory of the repository 
-### 2. Building the Project
+> **Note**: All commands below should be run from the directory PackItUp
 ```bash
 mvn clean package
 ```
