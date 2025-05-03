@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane scaleShape="false" style="-fx-background-color: #cd9f61;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PackItUp.splashController">
+   <children>
+      <AnchorPane>
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c08f4f" height="410.0" layoutX="162.0" layoutY="-1.0" pickOnBounds="true" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-background-color: #cd9f61;" width="271.0" />
+            <Button alignment="CENTER" layoutX="243.0" layoutY="234.0" mnemonicParsing="false" onAction="#goHome" text="Start Packing">
+               <font>
+                  <Font name="Futura Bold" size="13.0" />
+               </font>
+            </Button>
+            <Text layoutX="166.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pack It Up" AnchorPane.bottomAnchor="204.52000045776367" AnchorPane.leftAnchor="166.0" AnchorPane.rightAnchor="172.47998046875" AnchorPane.topAnchor="142.12799835205078">
+               <font>
+                  <Font name="Futura Bold" size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>
