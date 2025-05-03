@@ -87,8 +87,8 @@ public class itemController implements Controller<Item> {
         Parent root = loader.load();
 
         itemHomeController controller = loader.getController();
-        controller.setItemList(itemList); // Pass the updated list back
-        controller.setSelectedBoxID(boxID);
+        controller.setList(itemList); // Pass the updated list back
+        controller.setSelectedID(boxID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -138,8 +138,8 @@ public class itemController implements Controller<Item> {
         Parent root = loader.load();
 
         itemHomeController controller = loader.getController();
-        controller.setItemList(itemList); // Pass the updated list back
-        controller.setSelectedBoxID(boxID);
+        controller.setList(itemList); // Pass the updated list back
+        controller.setSelectedID(boxID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

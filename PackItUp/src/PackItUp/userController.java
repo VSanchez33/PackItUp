@@ -91,7 +91,7 @@ public class userController implements Controller<User> {
 
         // Pass the updated user list to userHomeController
         userHomeController controller = loader.getController();
-        controller.setUserList(userList);
+        controller.setList(userList);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

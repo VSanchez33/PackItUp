@@ -29,7 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class userHomeController {
+public class userHomeController implements homeController<User> {
 
     // Variable declaration
     private ObservableList<User> userList = FXCollections.observableArrayList(); // List to store boxes
@@ -46,7 +46,7 @@ public class userHomeController {
 
     // Method to initialize the controller
     @FXML
-    private void initialize() {
+    public void initialize() throws IOException {
 
         // Set up each column to display the correct property
         userColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -81,7 +81,7 @@ public class userHomeController {
     } // end of initialize
 
     // Set the user to the list
-    public void setUserList(ObservableList<User> userList) {
+    public void setList(ObservableList<User> userList) {
 
         this.userList = userList;
         tableView.setItems(userList); // Update the table with the new list
@@ -104,7 +104,7 @@ public class userHomeController {
     } // end of goBack
 
     // Button that opens the user creation screen
-    public void createUser(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
 
         saveData();
 
@@ -124,7 +124,7 @@ public class userHomeController {
 
     // Button that allows the user to delete the selected list box
     @FXML
-    void deleteUser(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
 
         User selectedUser = tableView.getSelectionModel().getSelectedItem(); // Get the selected box from the TableView
 
@@ -159,7 +159,7 @@ public class userHomeController {
     } // end of deleteUser
 
     // Edit user by selecting the desired user and clicking the Edit button
-    public void editUser(ActionEvent event) throws IOException {
+    public void edit(ActionEvent event) throws IOException {
 
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
@@ -195,8 +195,8 @@ public class userHomeController {
             int userID = selectedUser.getID();
             System.out.println("User Passed ID: " + userID);
 
-            controller.setSelectedUser(userID);
-            controller.displayLocations(userID);
+            controller.setSelectedID(userID);
+            controller.display(userID);
 
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -212,7 +212,7 @@ public class userHomeController {
     } // end of openUser
 
     @FXML
-    private void handleEditUser(ActionEvent event) throws IOException {
+    public void handleEdit(ActionEvent event) throws IOException {
 
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
@@ -310,5 +310,17 @@ public class userHomeController {
         } // end of try/catch
 
     } // end of loadData
+
+    public void setSelectedID(int id) {
+        ;
+    };
+
+    public int getSelectedID() {
+        return 0;
+    };
+
+    public void display(int id) {
+        ;
+    };
 
 } // end of userHomeController

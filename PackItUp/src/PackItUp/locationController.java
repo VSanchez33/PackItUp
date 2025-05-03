@@ -58,17 +58,20 @@ public class locationController implements Controller<Location> {
     @FXML
     public void cancel(ActionEvent event) throws IOException {
 
-        // Navigate back to Location screen
+        // Load the previous screen (e.g., locationHomeController)
         FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
-        Parent root = loader.load();
+        root = loader.load();
 
-        // Pass the updated location list to locationHomeController
-        locationHomeController controller = loader.getController();
-        controller.setLocationList(locationList);
-        controller.setSelectedUser(userID);
+        // Pass the updated box list to locationHomeController
+        locationHomeController locationController = loader.getController();
+        locationController.display(locationController.getSelectedID()); // Pass the list of Box objects
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
+        // Pass the current user (if needed)
+        locationController.setSelectedID(locationController.getSelectedID());
+
+        // Navigate to the locationHome screen
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
@@ -104,8 +107,8 @@ public class locationController implements Controller<Location> {
 
         // Pass the updated location list to locationHomeController
         locationHomeController controller = loader.getController();
-        controller.setLocationList(locationList);
-        controller.setSelectedUser(userID);
+        controller.setList(locationList);
+        controller.setSelectedID(userID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

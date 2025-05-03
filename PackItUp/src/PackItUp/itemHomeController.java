@@ -31,7 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class itemHomeController {
+public class itemHomeController implements homeController<Item> {
 
     // Variable declaration
     private ObservableList<Item> itemList = FXCollections.observableArrayList(); // List to store items
@@ -59,7 +59,7 @@ public class itemHomeController {
     private TextField searchField;
 
     @FXML
-    private void initialize() throws IOException {
+    public void initialize() throws IOException {
 
         // Set up each column to display the correct property
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
@@ -67,7 +67,7 @@ public class itemHomeController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("packStatus"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-        displayItems(selectedBoxID);
+        display(selectedBoxID);
 
         // Load data
         loadData();
@@ -111,7 +111,7 @@ public class itemHomeController {
     } // end of initialize
 
     // Open the editing view when an item is double-clicked
-    public void editItem(ActionEvent event) throws IOException {
+    public void edit(ActionEvent event) throws IOException {
 
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -139,8 +139,20 @@ public class itemHomeController {
     // Button that opens Boxes Screen
     public void goBack(ActionEvent event) throws IOException {
 
-        saveData();
-        root = FXMLLoader.load(getClass().getResource("box.fxml"));
+        saveData(); // Save any changes made to the list of items before going back
+
+        // Load the previous screen (e.g., locationHomeController)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+        root = loader.load();
+
+        // Pass the updated box list to locationHomeController
+        boxHomeController boxController = loader.getController();
+        boxController.display(boxController.getSelectedID()); // Pass the list of Box objects
+
+        // Pass the current user (if needed)
+        boxController.setSelectedID(boxController.getSelectedID());
+
+        // Navigate to the locationHome screen
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -149,7 +161,7 @@ public class itemHomeController {
     } // end of goBack
 
     // Button that opens the item creation screen
-    public void createItem(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
 
         saveData();
 
@@ -169,7 +181,7 @@ public class itemHomeController {
 
     // Button that allows the user to delete the selected list item
     @FXML
-    void deleteItem(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
 
         // Get the selected item from the TableView
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
@@ -204,11 +216,23 @@ public class itemHomeController {
 
         } // end of else
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("items.fxml"));
+        Parent root = loader.load();
+
+        itemHomeController controller = loader.getController();
+        controller.setList(itemList); // Pass the updated list back
+        controller.setSelectedID(controller.getSelectedID());
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
         saveData();
 
     } // end of deleteItem
 
-    public void setItemList(ObservableList<Item> itemList) {
+    public void setList(ObservableList<Item> itemList) {
 
         this.itemList = itemList;
         tableView.setItems(itemList); // Update the table with the new list
@@ -219,7 +243,7 @@ public class itemHomeController {
     } // end of setItemList
 
     @FXML
-    private void handleEditItem(ActionEvent event) throws IOException {
+    public void handleEdit(ActionEvent event) throws IOException {
 
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -334,23 +358,23 @@ public class itemHomeController {
     } // end of loadData
 
     // Set the boxId to get the correct items
-    public void setSelectedBoxID(int id) {
+    public void setSelectedID(int id) {
 
         selectedBoxID = id;
         loadData(); // Reload data when the selected box changes
-        displayItems(selectedBoxID);
+        display(selectedBoxID);
 
     } // end of setSelectedBoxID
 
     // get the box id to display the correct items
-    public int getSelectedBoxID() {
+    public int getSelectedID() {
 
         return selectedBoxID;
 
     } // end of getSeletcedBoxID
 
     // Displays the items from correct box
-    public void displayItems(int boxID) {
+    public void display(int boxID) {
 
         ObservableList<Item> filteredList = itemList.filtered(item -> item.getBoxID() == boxID);
         tableView.setItems(filteredList);

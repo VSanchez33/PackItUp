@@ -59,17 +59,20 @@ public class boxController implements Controller<Box> {
     @FXML
     public void cancel(ActionEvent event) throws IOException {
 
-        // Navigate back to home
+        // Load the previous screen (e.g., locationHomeController)
         FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
-        Parent root = loader.load();
+        root = loader.load();
 
-        // Pass the updated location list to locationHomeController
-        boxHomeController controller = loader.getController();
-        controller.setBoxList(boxList);
-        controller.setSelectedLocation(locationID);
+        // Pass the updated box list to locationHomeController
+        boxHomeController boxController = loader.getController();
+        boxController.display(boxController.getSelectedID()); // Pass the list of Box objects
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
+        // Pass the current user (if needed)
+        boxController.setSelectedID(boxController.getSelectedID());
+
+        // Navigate to the locationHome screen
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
@@ -81,7 +84,7 @@ public class boxController implements Controller<Box> {
 
         if (currentBox != null) { // If we're updating an existing location, apply changes
 
-            idField.setText(currentBox.getBoxInput());
+            currentBox.setBoxInput(idField.getText());
             currentBox.setBoxName(nameField.getText());
 
         } // end of if
@@ -106,8 +109,8 @@ public class boxController implements Controller<Box> {
 
         // Pass the updated location list to locationHomeController
         boxHomeController controller = loader.getController();
-        controller.setBoxList(boxList);
-        controller.setSelectedLocation(locationID);
+        controller.setList(boxList);
+        controller.setSelectedID(locationID);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

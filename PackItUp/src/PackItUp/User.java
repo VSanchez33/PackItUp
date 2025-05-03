@@ -16,46 +16,49 @@ public class User {
     // Variable declaration
     private static int idCounter = 1;
     private StringProperty userName;
-    private IntegerProperty userID;
+    public IntegerProperty userID;
     private ArrayList<Location> locations;
 
     // Constructors
     public User() {
-        
+
         this.userID = new SimpleIntegerProperty(idCounter++);
         this.userName = new SimpleStringProperty("UserName");
         this.locations = new ArrayList<>();
     }
 
     public User(String name) {
-        
+
         this.userID = new SimpleIntegerProperty(idCounter++);
         this.userName = new SimpleStringProperty(name);
         this.locations = new ArrayList<>();
     }
 
     public User(int id, String name) {
-        
+
         this.userID = new SimpleIntegerProperty(id);
         this.userName = new SimpleStringProperty(name);
         this.locations = new ArrayList<>();
-    
+
         if (id >= idCounter) {
             idCounter = id + 1;
         }
     }
 
     // Setters and getters
-    
+
     public void setName(String newName) {
         userName.set(newName);
     }
+
     public String getName() {
         return userName.get();
     }
+
     public void setID(int newID) {
         userID.set(newID);
     }
+
     public int getID() {
         return userID.get();
     }
@@ -67,7 +70,7 @@ public class User {
     public ArrayList<Location> getLocations() {
         return locations;
     }
-    
+
     public static void resetIDCounter() {
         idCounter = 1;
     }

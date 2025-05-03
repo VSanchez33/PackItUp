@@ -29,7 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class boxHomeController {
+public class boxHomeController implements homeController<Box> {
 
     // Variable declaration
     private ObservableList<Box> boxList = FXCollections.observableArrayList(); // List to store boxes
@@ -48,14 +48,14 @@ public class boxHomeController {
     private TableColumn<Box, Integer> idColumn;
 
     @FXML
-    private void initialize() {
+    public void initialize() throws IOException {
 
         // Set up each column to display the correct property
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("boxID"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("boxInput"));
         boxNameColumn.setCellValueFactory(new PropertyValueFactory<>("boxName"));
 
         // Initially populate the table with data from boxList
-        displayBoxes(selectedLocationID);
+        display(selectedLocationID);
 
         // Load data
         loadData();
@@ -99,8 +99,8 @@ public class boxHomeController {
             int boxID = selectedBox.getBoxID();
             System.out.println("Box Passed ID: " + boxID);
 
-            controller.setSelectedBoxID(boxID);
-            controller.displayItems(boxID);
+            controller.setSelectedID(boxID);
+            controller.display(boxID);
 
             Stage stage = (Stage) tableView.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -118,8 +118,20 @@ public class boxHomeController {
     // Button that opens Home Screen
     public void goBack(ActionEvent event) throws IOException {
 
-        saveData();
-        root = FXMLLoader.load(getClass().getResource("location.fxml"));
+        saveData(); // Save any changes made to the list of boxes before going back
+
+        // Load the previous screen (e.g., locationHomeController)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+        root = loader.load();
+
+        // Pass the updated box list to locationHomeController
+        locationHomeController locationController = loader.getController();
+        locationController.display(locationController.getSelectedID()); // Pass the list of Box objects
+
+        // Pass the current user (if needed)
+        locationController.setSelectedID(locationController.getSelectedID());
+
+        // Navigate to the locationHome screen
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -128,7 +140,7 @@ public class boxHomeController {
     } // end of goBack
 
     // Button that opens the box creation screen
-    public void createBox(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
 
         saveData();
 
@@ -149,7 +161,7 @@ public class boxHomeController {
 
     // Button that allows the user to delete the selected list box
     @FXML
-    void deleteBox(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
 
         // Get the selected box from the TableView
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
@@ -184,11 +196,28 @@ public class boxHomeController {
 
         } // end of else
 
+        // Load the previous screen (e.g., locationHomeController)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("box.fxml"));
+        root = loader.load();
+
+        // Pass the updated box list to locationHomeController
+        boxHomeController boxController = loader.getController();
+        boxController.display(boxController.getSelectedID()); // Pass the list of Box objects
+
+        // Pass the current user (if needed)
+        boxController.setSelectedID(boxController.getSelectedID());
+
+        // Navigate to the locationHome screen
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
         saveData();
 
     } // end of deleteBox
 
-    public void editBox(ActionEvent event) throws IOException {
+    public void edit(ActionEvent event) throws IOException {
 
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
@@ -213,7 +242,7 @@ public class boxHomeController {
 
     } // end of editBox
 
-    public void setBoxList(ObservableList<Box> boxList) {
+    public void setList(ObservableList<Box> boxList) {
 
         this.boxList = boxList;
         tableView.setItems(boxList); // Update the table with the new list
@@ -224,7 +253,7 @@ public class boxHomeController {
     } // end of setBoxList
 
     @FXML
-    private void handleEditBox(ActionEvent event) throws IOException {
+    public void handleEdit(ActionEvent event) throws IOException {
 
         Box selectedBox = tableView.getSelectionModel().getSelectedItem();
 
@@ -337,19 +366,19 @@ public class boxHomeController {
 
     } // end of loadData
 
-    public void setSelectedLocation(int locationID) {
+    public void setSelectedID(int locationID) {
 
         selectedLocationID = locationID;
         loadData();
-        displayBoxes(locationID);
+        display(locationID);
 
     } // end of setSelectedLocationID
 
-    public int getSelectedLocationID() {
+    public int getSelectedID() {
         return selectedLocationID;
     } // end of getSelectedLocationID
 
-    public void displayBoxes(int locationID) {
+    public void display(int locationID) {
 
         ObservableList<Box> filteredList = boxList.filtered(box -> box.getLocationID() == locationID);
         tableView.setItems(filteredList);

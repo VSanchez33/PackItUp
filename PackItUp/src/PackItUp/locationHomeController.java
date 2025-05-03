@@ -29,7 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class locationHomeController {
+public class locationHomeController implements homeController<Location> {
 
     // Variable declaration
     private ObservableList<Location> locationList = FXCollections.observableArrayList(); // List to store locations
@@ -46,13 +46,13 @@ public class locationHomeController {
 
     // Method to initialize the controller
     @FXML
-    private void initialize() {
+    public void initialize() throws IOException {
 
         // Set up each column to display the correct property
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         // Initially populate the table with data from locationList
-        displayLocations(selectedUserID);
+        display(selectedUserID);
 
         // Load data
         loadData();
@@ -98,8 +98,8 @@ public class locationHomeController {
             System.out.println("Location Passed ID: " + locationID);
 
             // Pass the location's ID to the boxHomeController
-            controller.setSelectedLocation(locationID);
-            controller.displayBoxes(locationID); // Filter boxes by locationID
+            controller.setSelectedID(locationID);
+            controller.display(locationID); // Filter boxes by locationID
 
             // Set up the stage and scene for the box creation screen
             Stage stage = (Stage) tableView.getScene().getWindow();
@@ -128,7 +128,7 @@ public class locationHomeController {
     } // end of goBack
 
     // Button that opens the location creation screen
-    public void createLocation(ActionEvent event) throws IOException {
+    public void create(ActionEvent event) throws IOException {
 
         saveData();
 
@@ -149,7 +149,7 @@ public class locationHomeController {
 
     // Button that allows the user to delete the selected list location
     @FXML
-    void deleteLocation(ActionEvent event) throws IOException {
+    public void delete(ActionEvent event) throws IOException {
 
         Location selectedLocation = tableView.getSelectionModel().getSelectedItem(); // Get the selected location from
                                                                                      // the TableView
@@ -182,12 +182,29 @@ public class locationHomeController {
 
         } // end of else
 
+        // Load the previous screen (e.g., locationHomeController)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("location.fxml"));
+        root = loader.load();
+
+        // Pass the updated box list to locationHomeController
+        locationHomeController locationController = loader.getController();
+        locationController.display(locationController.getSelectedID()); // Pass the list of Box objects
+
+        // Pass the current user (if needed)
+        locationController.setSelectedID(locationController.getSelectedID());
+
+        // Navigate to the locationHome screen
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
         saveData();
 
     } // end of deleteLocation
 
     // Edit location by selecting the desired location and clicking the Edit button
-    public void editLocation(ActionEvent event) throws IOException {
+    public void edit(ActionEvent event) throws IOException {
 
         Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
 
@@ -212,7 +229,7 @@ public class locationHomeController {
 
     } // end of editLocation
 
-    public void setLocationList(ObservableList<Location> locationList) {
+    public void setList(ObservableList<Location> locationList) {
 
         this.locationList = locationList;
         tableView.setItems(locationList); // Update the table with the new list
@@ -223,7 +240,7 @@ public class locationHomeController {
     } // end of setLocationList
 
     @FXML
-    private void handleEditLocation(ActionEvent event) throws IOException {
+    public void handleEdit(ActionEvent event) throws IOException {
 
         Location selectedLocation = tableView.getSelectionModel().getSelectedItem();
 
@@ -322,19 +339,19 @@ public class locationHomeController {
 
     } // end of loadData
 
-    public void setSelectedUser(int userID) {
+    public void setSelectedID(int userID) {
 
         selectedUserID = userID;
         loadData();
-        displayLocations(userID);
+        display(userID);
 
     } // setSelectedUser
 
-    public int getSelectedUser() {
+    public int getSelectedID() {
         return selectedUserID;
     }
 
-    public void displayLocations(int userID) {
+    public void display(int userID) {
 
         ObservableList<Location> filteredList = locationList.filtered(location -> location.getUserID() == userID);
         tableView.setItems(filteredList);

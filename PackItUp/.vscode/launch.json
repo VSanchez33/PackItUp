@@ -9,21 +9,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "PackItUp.Main",
-<<<<<<< HEAD
-            //"projectName": "PackItUp_5665c643",
-            "vmArgs": "--module-path \"/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}",
-            // "vmArgs": "--module-path \"${workspaceFolder}/src/PackItUp/tools/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
-            //"vmArgs": "--module-path \"/Users/austinmatthys/Desktop/Software_Dev/tools/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
-=======
 
             "vmArgs": "--module-path \"${workspaceFolder}/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
->>>>>>> main
         }
     ]
 }
