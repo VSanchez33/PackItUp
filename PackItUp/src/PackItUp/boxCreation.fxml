@@ -15,7 +15,7 @@
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b99159" height="62.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="601.0" />
-            <Text layoutX="180.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Box" textAlignment="CENTER">
+            <Text layoutX="250.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box" textAlignment="CENTER">
                <font>
                   <Font name="Futura Bold" size="48.0" />
                </font>
