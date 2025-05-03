@@ -26,7 +26,7 @@ mvn clean package
 java --module-path javafx-sdk-23.0.2/lib --add-modules javafx.controls,javafx.fxml -jar target/Main-1.0-SNAPSHOT.jar
 ```
 
-### [Wiki Home Page](https://github.com/NMSU-CS-CS371/cs371-sp2025-teamproject-pack-it-up/wiki)
+### [Wiki Home Page](https://github.com/VSanchez33/PackItUp/wiki)
 All of the information about Pack It Up can be found in the wiki!
 
 ## User Guide
